@@ -78,7 +78,7 @@ public class BasicFrame extends JFrame implements ActionListener {
         setSize(frameWidth, frameHeight);
         setLayout(new BorderLayout());
         Box visualization = Box.createHorizontalBox();
-        visualization.setBorder(new LineBorder(Color.red, 4));
+//        visualization.setBorder(new LineBorder(Color.red, 4));
 
 //        randRects = new RandRect();
 //        randRects.setAlignmentY(JComponent.BOTTOM_ALIGNMENT);

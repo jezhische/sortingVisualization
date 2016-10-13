@@ -14,10 +14,9 @@ import java.util.Collections;
 /**
  * Created by WORK on 12.10.2016.
  */
-public class BasicFrame extends JFrame implements ActionListener {
+public class BasicFrame_auxiliary extends JFrame implements ActionListener {
 
 //    private Timer timer;
-    private GridBagConstraints gridBag = new GridBagConstraints();
     private JButton start;
     private JButton reset;
     private JSlider rectNumberSlider;
@@ -31,80 +30,76 @@ public class BasicFrame extends JFrame implements ActionListener {
     private int count;
     private int delay;
 
-    public void addComponentsToPane() {
+    BasicFrame_auxiliary() {
 
-//        getContentPane().setLayout(new GridBagLayout());
-//        gridBag = new GridBagConstraints();
+        rectNumberSlider = new JSlider(JSlider.HORIZONTAL, 10, 300, 70);
+        rectNumberSlider.setMajorTickSpacing(20);
+        rectNumberSlider.setMinorTickSpacing(5);
+        rectNumberSlider.setPaintTicks(true);
+        rectNumberSlider.setPaintLabels(true);
+        rectNumberSlider.setSnapToTicks(true);
+        rectNumberSlider.setBorder(new TitledBorder("number of items to be sorted (press \"Reset\" after setting)"));
 
-        randRects = new RandRect();
-        gridBag.fill = GridBagConstraints.HORIZONTAL;
-        gridBag.gridx = 0;
-        gridBag.gridy = 0;
-        gridBag.ipady = 300;
-        gridBag.weightx = 1;
-        gridBag.weighty = 1;
+        delaySlider = new JSlider(JSlider.HORIZONTAL, 1, 500, 50);
+        delaySlider.setMajorTickSpacing(20);
+        delaySlider.setMinorTickSpacing(5);
+        delaySlider.setPaintTicks(true);
+        delaySlider.setPaintLabels(true);
+        delaySlider.setSnapToTicks(true);
+        delaySlider.setBorder(new TitledBorder("delay"));
+        delaySlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                timer.setDelay(delaySlider.getValue());
+            }
+        });
 
-        getContentPane().add(randRects, gridBag);
-
-    }
-
-        BasicFrame() {
-
-            getContentPane().setLayout(new GridBagLayout());
-
+        delay = delaySlider.getValue();
+        count = rectNumberSlider.getValue();
         frameWidth = 1300;
         frameHeight = 700;
         yShift = 300;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            setLayout(new GridBagLayout());
-            setVisible(true);
         setSize(frameWidth, frameHeight);
+        setLayout(new BorderLayout());
+        Box visualization = Box.createHorizontalBox();
+//        visualization.setBorder(new LineBorder(Color.red, 4));
+
+        randRects = new RandRect();
+        randRects.setAlignmentY(JComponent.BOTTOM_ALIGNMENT);
+        randRects.setPreferredSize(new Dimension(frameWidth, yShift));
+        visualization.add(randRects);
+
+//        RandomRectangles randomRectangles = new RandomRectangles(count, yShift, frameWidth, frameHeight, rX);
+//        randomRectangles.setAlignmentY(JComponent.BOTTOM_ALIGNMENT);
+////        randomRectangles.setPreferredSize(new Dimension(frameWidth, yShift));
+//        visualization.add(randomRectangles);
+
+        Box buttons = Box.createHorizontalBox();
+        buttons.setBorder(new EtchedBorder(Color.BLUE, Color.BLUE));
+
+//        timer = new Timer(delay, new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                randRects.repaint();
+//            }
+//        });
+
 
         start = new JButton("Start");
         start.addActionListener(this);
         reset = new JButton("Reset");
         reset.addActionListener(this);
-
-            rectNumberSlider = new JSlider(JSlider.HORIZONTAL, 10, 300, 70);
-            rectNumberSlider.setMajorTickSpacing(20);
-            rectNumberSlider.setMinorTickSpacing(5);
-            rectNumberSlider.setPaintTicks(true);
-            rectNumberSlider.setPaintLabels(true);
-            rectNumberSlider.setSnapToTicks(true);
-            rectNumberSlider.setBorder(new TitledBorder("number of items to be sorted (press \"Reset\" after setting)"));
-
-            delaySlider = new JSlider(JSlider.HORIZONTAL, 1, 500, 50);
-            delaySlider.setMajorTickSpacing(20);
-            delaySlider.setMinorTickSpacing(5);
-            delaySlider.setPaintTicks(true);
-            delaySlider.setPaintLabels(true);
-            delaySlider.setSnapToTicks(true);
-            delaySlider.setBorder(new TitledBorder("delay"));
-            delaySlider.addChangeListener(new ChangeListener() {
-                @Override
-                public void stateChanged(ChangeEvent e) {
-                    timer.setDelay(delaySlider.getValue());
-                }
-            });
-
-            delay = delaySlider.getValue();
-            count = rectNumberSlider.getValue();
-
-            Box buttons = Box.createHorizontalBox();
-            buttons.setBorder(new EtchedBorder(Color.BLUE, Color.BLUE));
-            gridBag.fill = GridBagConstraints.HORIZONTAL;
-//            gridBag.ipady = 50;
-            gridBag.gridx = 0;
-            gridBag.gridy = 4;
-            gridBag.weightx = 1;
-            gridBag.weighty = 1;
-
         buttons.add(start);
         buttons.add(reset);
+
+
         buttons.add(rectNumberSlider);
         buttons.add(delaySlider);
 
-            add(buttons, gridBag);
+        add(visualization, BorderLayout.CENTER);
+        add(buttons, BorderLayout.SOUTH);
+//        pack();
     }
 
     class RandRect extends JComponent {
@@ -123,9 +118,6 @@ public class BasicFrame extends JFrame implements ActionListener {
             Graphics2D g2d = (Graphics2D) g;
 
             g2d.setBackground(Color.PINK);
-
-            frameWidth = this.getWidth();
-            frameHeight = this.getHeight();
 
             g2d.clearRect(0, 0, frameWidth, frameHeight);
 
@@ -157,10 +149,9 @@ public class BasicFrame extends JFrame implements ActionListener {
     }
 
     //    rectNumberSlider.getValueIsAdjusting()
-    private Timer timer = new Timer(delay, new ActionListener() {
+    Timer timer = new Timer(delay, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-//            count = rectNumberSlider.getValue();
             randRects.repaint();
         }
     });
@@ -183,7 +174,7 @@ public class BasicFrame extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new BasicFrame().addComponentsToPane());
+        SwingUtilities.invokeLater(() -> new BasicFrame_auxiliary().setVisible(true));
 //        getRandomList(20);
     }
 }
