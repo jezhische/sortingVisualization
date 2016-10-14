@@ -135,7 +135,6 @@ public class BasicFrame extends JFrame implements ActionListener {
             Graphics2D g2d = (Graphics2D) g;
 
             g2d.setBackground(Color.PINK);
-
             frameWidth = this.getWidth();
             frameHeight = this.getHeight();
 
@@ -217,6 +216,7 @@ public class BasicFrame extends JFrame implements ActionListener {
             count = rectNumberSlider.getValue();
             randomList = getRandomList(count);
             bubbleSort.j = 0;
+            bubbleSort.transit = 0;
             bubbleSort.k = count - 1;
             start.setText("Start");
             randRects.repaint();

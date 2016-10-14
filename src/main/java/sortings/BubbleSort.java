@@ -8,7 +8,7 @@ import java.util.Collections;
  */
 public class BubbleSort {
     private int count;
-//    private ArrayList<Integer> series;
+    //    private ArrayList<Integer> series;
     public int j;
     public int k;
 
@@ -26,15 +26,17 @@ public class BubbleSort {
 //    }
 
     {
-//        series = getRandomList();
         j = 0;
-//        k = series.size() - 1;
         k = count - 1;
     }
+    public int transit = 0;
 
     public ArrayList<Integer> sort(ArrayList<Integer> randomList) {
 //        series = getRandomList(count);
-        if (j < k) {
+        if (j == 0 && transit == 0) {
+            transit++;
+            return randomList;
+        } else if (j < k) {
             if (randomList.get(j) > randomList.get(j + 1)) {
                 Collections.swap(randomList, j, j + 1);
                 j++;
