@@ -1,5 +1,7 @@
 package basicFrame;
 
+import sortings.BubbleSort;
+
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
@@ -9,14 +11,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Created by WORK on 12.10.2016.
  */
 public class BasicFrame extends JFrame implements ActionListener {
 
-//    private Timer timer;
+    //    private Timer timer;
     private GridBagConstraints gridBag = new GridBagConstraints();
     private JButton start;
     private JButton reset;
@@ -26,7 +27,7 @@ public class BasicFrame extends JFrame implements ActionListener {
     private int frameWidth;
     private int frameHeight;
     private int yShift;
-    //    private ArrayList<Integer> randomList;
+    private ArrayList<Integer> randomList;
     private int rX;
     private int count;
     private int delay;
@@ -48,16 +49,16 @@ public class BasicFrame extends JFrame implements ActionListener {
 
     }
 
-        BasicFrame() {
+    public BasicFrame() {
 
-            getContentPane().setLayout(new GridBagLayout());
+        getContentPane().setLayout(new GridBagLayout());
 
         frameWidth = 1300;
         frameHeight = 700;
         yShift = 300;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            setLayout(new GridBagLayout());
-            setVisible(true);
+        setLayout(new GridBagLayout());
+        setVisible(true);
         setSize(frameWidth, frameHeight);
 
         start = new JButton("Start");
@@ -65,58 +66,61 @@ public class BasicFrame extends JFrame implements ActionListener {
         reset = new JButton("Reset");
         reset.addActionListener(this);
 
-            rectNumberSlider = new JSlider(JSlider.HORIZONTAL, 10, 300, 70);
-            rectNumberSlider.setMajorTickSpacing(20);
-            rectNumberSlider.setMinorTickSpacing(5);
-            rectNumberSlider.setPaintTicks(true);
-            rectNumberSlider.setPaintLabels(true);
-            rectNumberSlider.setSnapToTicks(true);
-            rectNumberSlider.setBorder(new TitledBorder("number of items to be sorted (press \"Reset\" after setting)"));
+        rectNumberSlider = new JSlider(JSlider.HORIZONTAL, 10, 300, 70);
+        rectNumberSlider.setMajorTickSpacing(20);
+        rectNumberSlider.setMinorTickSpacing(5);
+        rectNumberSlider.setPaintTicks(true);
+        rectNumberSlider.setPaintLabels(true);
+        rectNumberSlider.setSnapToTicks(true);
+        rectNumberSlider.setBorder(new TitledBorder("number of items to be sorted (press \"Reset\" after setting)"));
 
-            delaySlider = new JSlider(JSlider.HORIZONTAL, 1, 500, 50);
-            delaySlider.setMajorTickSpacing(20);
-            delaySlider.setMinorTickSpacing(5);
-            delaySlider.setPaintTicks(true);
-            delaySlider.setPaintLabels(true);
-            delaySlider.setSnapToTicks(true);
-            delaySlider.setBorder(new TitledBorder("delay"));
-            delaySlider.addChangeListener(new ChangeListener() {
-                @Override
-                public void stateChanged(ChangeEvent e) {
-                    timer.setDelay(delaySlider.getValue());
-                }
-            });
+        delaySlider = new JSlider(JSlider.HORIZONTAL, 1, 500, 50);
+        delaySlider.setMajorTickSpacing(20);
+        delaySlider.setMinorTickSpacing(5);
+        delaySlider.setPaintTicks(true);
+        delaySlider.setPaintLabels(true);
+        delaySlider.setSnapToTicks(true);
+        delaySlider.setBorder(new TitledBorder("delay"));
+        delaySlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                timer.setDelay(delaySlider.getValue());
+            }
+        });
 
-            delay = delaySlider.getValue();
-            count = rectNumberSlider.getValue();
+        delay = delaySlider.getValue();
+        count = rectNumberSlider.getValue();
 
-            Box buttons = Box.createHorizontalBox();
-            buttons.setBorder(new EtchedBorder(Color.BLUE, Color.BLUE));
-            gridBag.fill = GridBagConstraints.HORIZONTAL;
+        Box buttons = Box.createHorizontalBox();
+        buttons.setBorder(new EtchedBorder(Color.BLUE, Color.BLUE));
+        gridBag.fill = GridBagConstraints.HORIZONTAL;
 //            gridBag.ipady = 50;
-            gridBag.gridx = 0;
-            gridBag.gridy = 4;
-            gridBag.weightx = 1;
-            gridBag.weighty = 1;
+        gridBag.gridx = 0;
+        gridBag.gridy = 4;
+        gridBag.weightx = 1;
+        gridBag.weighty = 1;
 
         buttons.add(start);
         buttons.add(reset);
         buttons.add(rectNumberSlider);
         buttons.add(delaySlider);
 
-            add(buttons, gridBag);
+        add(buttons, gridBag);
     }
+//
+//    private ArrayList<Integer> getRandomList(int count) {
+//        randomList = new ArrayList<>(count);
+//        for (int i = 0; i < count; i++) {
+//            randomList.add(i);
+//        }
+//        Collections.shuffle(randomList);
+//        return randomList;
+//    }
+
+    BubbleSort bubbleSort = new BubbleSort(count);
 
     class RandRect extends JComponent {
 
-        private ArrayList<Integer> getRandomList(int count) {
-            ArrayList<Integer> randomList = new ArrayList<>(count);
-            for (int i = 0; i < count; i++) {
-                randomList.add(i);
-            }
-            Collections.shuffle(randomList);
-            return randomList;
-        }
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
@@ -134,9 +138,10 @@ public class BasicFrame extends JFrame implements ActionListener {
             rWidth = (int) ((frameWidth - 1) / count);
             coefficient = (int) ((yShift) / count);
 
-            ArrayList<Integer> randomList = getRandomList(count);
-            for (int i = 0; i < count; i++) {
-                rHeight = -(randomList.get(i) * coefficient);
+//            randomList = new RandomGenerator().getRandomList(count);
+            randomList = bubbleSort.sort();
+            for (int i = 0; i < count - 1; i++) {
+                rHeight = -((randomList.get(i) * coefficient) / 5);
                 rX = i * rWidth;
                 g2d.setColor(Color.BLUE);
                 g2d.drawRect(rX, yShift, rWidth, rHeight - 4);
@@ -144,14 +149,14 @@ public class BasicFrame extends JFrame implements ActionListener {
                 g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
                 g2d.setColor(Color.black);
 
-                int fontSize = (int)(rWidth / 1.5);
+                int fontSize = (int) (rWidth / 1.5);
                 Font f = new Font("Dialog", Font.BOLD, fontSize);
                 g2d.setFont(f);
                 FontMetrics fontMetrics = g2d.getFontMetrics();
                 int stringXCoordinate = rX + rWidth / 2 - fontMetrics.stringWidth(String.valueOf(randomList.get(i))) / 2;
-                int stringYCoordinate = yShift + (int)(fontMetrics.getHeight() + 1.5);
+                int stringYCoordinate = yShift + (int) (fontMetrics.getHeight() + 1.5);
                 g2d.drawString(String.valueOf(randomList.get(i)), stringXCoordinate, stringYCoordinate);
-
+//                randomList = bubbleSort.sort();
             }
         }
     }

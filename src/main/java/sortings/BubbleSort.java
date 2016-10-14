@@ -7,29 +7,58 @@ import java.util.Collections;
  * Created by Ежище on 12.10.2016.
  */
 public class BubbleSort {
+    private int count = 200;
+    private ArrayList<Integer> series;
+    private int j;
+    private int k;
 
-    public static ArrayList<Integer> sort(ArrayList<Integer> series) {
-        Collections.shuffle(series);
-        for (int k = series.size() - 1; k > 0; k--) {
-            for (int j = 0; j < k; j++) {
+    public BubbleSort(int count) {
+        this.count = count;
+    }
+
+    private ArrayList<Integer> getRandomList(int count) {
+        ArrayList<Integer> randomList = new ArrayList<>(count);
+        for (int i = 0; i < count; i++) {
+            randomList.add(i);
+        }
+        Collections.shuffle(randomList);
+        return randomList;
+    }
+
+    {
+        series = getRandomList(count);
+        j = 0;
+        k = series.size() - 1;
+    }
+
+    public ArrayList<Integer> sort() {
+//        series = getRandomList(count);
+        if (j < k) {
+            if (series.get(j) > series.get(j + 1)) {
+                Collections.swap(series, j, j + 1);
+                j++;
+//                return series;
+            } else if (j == k) {
+                k--;
+                j = 0;
                 if (series.get(j) > series.get(j + 1)) {
                     Collections.swap(series, j, j + 1);
+                    j++;
+//                    return series;
                 }
             }
         }
+//        else if (k == 1)
+//            series = series;
+//            return series;
         return series;
     }
 
-    public static void main(String[] args) {
-        ArrayList<Integer> arr = new ArrayList<>();
-        arr.add(4);
-        arr.add(12);
-        arr.add(1);
-        arr.add(8);
-        arr.add(6);
-
-        for (int x: sort(arr)) {
-            System.out.println(x);
-        }
-    }
+//    public static void main(String[] args) {
+//        ArrayList<Integer> arr = new BubbleSort(25).sort();
+//
+//        for (int x : arr) {
+//            System.out.print(x + ", ");
+//        }
+//    }
 }
