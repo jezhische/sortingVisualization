@@ -7,17 +7,17 @@ import java.util.Collections;
  * Created by Ежище on 12.10.2016.
  */
 public class BubbleSort {
-    private int count = 200;
+    private int count = 70;
     private ArrayList<Integer> series;
-    private int j;
-    private int k;
+    public int j;
+    public int k;
 
     public BubbleSort(int count) {
         this.count = count;
     }
 
-    private ArrayList<Integer> getRandomList(int count) {
-        ArrayList<Integer> randomList = new ArrayList<>(count);
+    private ArrayList<Integer> getRandomList() {
+        ArrayList<Integer> randomList = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             randomList.add(i);
         }
@@ -26,9 +26,10 @@ public class BubbleSort {
     }
 
     {
-        series = getRandomList(count);
+        series = getRandomList();
         j = 0;
-        k = series.size() - 1;
+//        k = series.size() - 1;
+        k = count - 1;
     }
 
     public ArrayList<Integer> sort() {
@@ -37,20 +38,21 @@ public class BubbleSort {
             if (series.get(j) > series.get(j + 1)) {
                 Collections.swap(series, j, j + 1);
                 j++;
-//                return series;
-            } else if (j == k) {
-                k--;
-                j = 0;
-                if (series.get(j) > series.get(j + 1)) {
-                    Collections.swap(series, j, j + 1);
-                    j++;
-//                    return series;
-                }
-            }
+            } else if (series.get(j) < series.get(j + 1))
+                j++;
+
+        } else if (j == k) {
+            k--;
+            j = 0;
+            if (series.get(j) > series.get(j + 1)) {
+                Collections.swap(series, j, j + 1);
+                j++;
+            } else if (series.get(j) < series.get(j + 1))
+                j++;
         }
-//        else if (k == 1)
+        else if (k == 1)
 //            series = series;
-//            return series;
+            return series;
         return series;
     }
 

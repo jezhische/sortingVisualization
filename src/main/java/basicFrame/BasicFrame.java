@@ -1,6 +1,7 @@
 package basicFrame;
 
 import sortings.BubbleSort;
+import sortings.RandomGenerator;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -11,6 +12,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by WORK on 12.10.2016.
@@ -27,7 +29,7 @@ public class BasicFrame extends JFrame implements ActionListener {
     private int frameWidth;
     private int frameHeight;
     private int yShift;
-    private ArrayList<Integer> randomList;
+    private ArrayList<Integer> sortingList;
     private int rX;
     private int count;
     private int delay;
@@ -74,9 +76,9 @@ public class BasicFrame extends JFrame implements ActionListener {
         rectNumberSlider.setSnapToTicks(true);
         rectNumberSlider.setBorder(new TitledBorder("number of items to be sorted (press \"Reset\" after setting)"));
 
-        delaySlider = new JSlider(JSlider.HORIZONTAL, 1, 500, 50);
-        delaySlider.setMajorTickSpacing(20);
-        delaySlider.setMinorTickSpacing(5);
+        delaySlider = new JSlider(JSlider.HORIZONTAL, 1, 100, 10);
+        delaySlider.setMajorTickSpacing(5);
+        delaySlider.setMinorTickSpacing(1);
         delaySlider.setPaintTicks(true);
         delaySlider.setPaintLabels(true);
         delaySlider.setSnapToTicks(true);
@@ -109,17 +111,18 @@ public class BasicFrame extends JFrame implements ActionListener {
     }
 //
 //    private ArrayList<Integer> getRandomList(int count) {
-//        randomList = new ArrayList<>(count);
+//        sortingList = new ArrayList<>(count);
 //        for (int i = 0; i < count; i++) {
-//            randomList.add(i);
+//            sortingList.add(i);
 //        }
-//        Collections.shuffle(randomList);
-//        return randomList;
+//        Collections.shuffle(sortingList);
+//        return sortingList;
 //    }
 
     BubbleSort bubbleSort = new BubbleSort(count);
+//    {sortingList = bubbleSort.sort();}
 
-    class RandRect extends JComponent {
+    private class RandRect extends JComponent {
 
         @Override
         protected void paintComponent(Graphics g) {
@@ -135,13 +138,13 @@ public class BasicFrame extends JFrame implements ActionListener {
 
 
             int rHeight, rWidth, coefficient;
-            rWidth = (int) ((frameWidth - 1) / count);
+            rWidth = (int)((frameWidth - 1) / count);
             coefficient = (int) ((yShift) / count);
 
-//            randomList = new RandomGenerator().getRandomList(count);
-            randomList = bubbleSort.sort();
+//            sortingList = new RandomGenerator().getRandomList(count);
+            sortingList = bubbleSort.sort();
             for (int i = 0; i < count - 1; i++) {
-                rHeight = -((randomList.get(i) * coefficient) / 5);
+                rHeight = -((sortingList.get(i) * coefficient));
                 rX = i * rWidth;
                 g2d.setColor(Color.BLUE);
                 g2d.drawRect(rX, yShift, rWidth, rHeight - 4);
@@ -153,10 +156,10 @@ public class BasicFrame extends JFrame implements ActionListener {
                 Font f = new Font("Dialog", Font.BOLD, fontSize);
                 g2d.setFont(f);
                 FontMetrics fontMetrics = g2d.getFontMetrics();
-                int stringXCoordinate = rX + rWidth / 2 - fontMetrics.stringWidth(String.valueOf(randomList.get(i))) / 2;
-                int stringYCoordinate = yShift + (int) (fontMetrics.getHeight() + 1.5);
-                g2d.drawString(String.valueOf(randomList.get(i)), stringXCoordinate, stringYCoordinate);
-//                randomList = bubbleSort.sort();
+                int stringXCoordinate = rX + rWidth / 2 - fontMetrics.stringWidth(String.valueOf(sortingList.get(i))) / 2;
+                int stringYCoordinate = yShift - (int) (fontMetrics.getHeight() + 10);
+                g2d.drawString(String.valueOf(sortingList.get(i)), stringXCoordinate, stringYCoordinate);
+//                sortingList = bubbleSort.sort();
             }
         }
     }
@@ -182,6 +185,9 @@ public class BasicFrame extends JFrame implements ActionListener {
             timer.stop();
             rX = 0;
             count = rectNumberSlider.getValue();
+            Collections.shuffle(sortingList);
+            bubbleSort.j = 0;
+            bubbleSort.k = count - 1;
             start.setText("Start");
             randRects.repaint();
         }
