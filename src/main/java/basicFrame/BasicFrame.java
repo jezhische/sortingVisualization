@@ -1,7 +1,6 @@
 package basicFrame;
 
 import sortings.BubbleSort;
-import sortings.RandomGenerator;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -30,6 +29,7 @@ public class BasicFrame extends JFrame implements ActionListener {
     private int frameHeight;
     private int yShift;
     private ArrayList<Integer> sortingList;
+    private ArrayList<Integer> randomList;
     private int rX;
     private int count;
     private int delay;
@@ -109,20 +109,25 @@ public class BasicFrame extends JFrame implements ActionListener {
 
         add(buttons, gridBag);
     }
-//
-//    private ArrayList<Integer> getRandomList(int count) {
-//        sortingList = new ArrayList<>(count);
-//        for (int i = 0; i < count; i++) {
-//            sortingList.add(i);
-//        }
-//        Collections.shuffle(sortingList);
-//        return sortingList;
-//    }
+
+    private ArrayList<Integer> getRandomList(int count) {
+        this.count = count;
+        ArrayList<Integer> randomList = new ArrayList<>(count);
+        for (int i = 0; i < count; i++) {
+            randomList.add(i);
+        }
+        Collections.shuffle(randomList);
+        return randomList;
+    }
+
+    {randomList = getRandomList(count);}
 
     BubbleSort bubbleSort = new BubbleSort(count);
-//    {sortingList = bubbleSort.sort();}
 
     private class RandRect extends JComponent {
+
+        {randomList = getRandomList(count);
+            bubbleSort.k = count - 1;}
 
         @Override
         protected void paintComponent(Graphics g) {
@@ -138,20 +143,45 @@ public class BasicFrame extends JFrame implements ActionListener {
 
 
             int rHeight, rWidth, coefficient;
-            rWidth = (int)((frameWidth - 1) / count);
+            rWidth = (int) ((frameWidth - 1) / count);
             coefficient = (int) ((yShift) / count);
 
 //            sortingList = new RandomGenerator().getRandomList(count);
-            sortingList = bubbleSort.sort();
-            for (int i = 0; i < count - 1; i++) {
+            sortingList = bubbleSort.sort(randomList);
+            for (int i = 0; i < count; i++) {
                 rHeight = -((sortingList.get(i) * coefficient));
                 rX = i * rWidth;
                 g2d.setColor(Color.BLUE);
                 g2d.drawRect(rX, yShift, rWidth, rHeight - 4);
                 g2d.setColor(Color.YELLOW);
                 g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
-                g2d.setColor(Color.black);
 
+                if (i == bubbleSort.j) {
+                    g2d.setColor(Color.RED);
+                    g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
+                }
+                if (i == bubbleSort.k) {
+                    g2d.setColor(Color.GREEN);
+                    g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
+                }
+                if (bubbleSort.k == 0) {
+                    for (int n = 0; n < count; n++) {
+                        rHeight = -((sortingList.get(n) * coefficient));
+                        rX = n * rWidth;
+                        g2d.setColor(Color.GREEN);
+                        g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
+                        g2d.setColor(Color.black);
+                        int fontSize = (int) (rWidth / 1.5);
+                        Font f = new Font("Dialog", Font.BOLD, fontSize);
+                        g2d.setFont(f);
+                        FontMetrics fontMetrics = g2d.getFontMetrics();
+                        int stringXCoordinate = rX + rWidth / 2 - fontMetrics.stringWidth(String.valueOf(sortingList.get(n))) / 2;
+                        int stringYCoordinate = yShift - (int) (fontMetrics.getHeight() + 10);
+                        g2d.drawString(String.valueOf(sortingList.get(n)), stringXCoordinate, stringYCoordinate);
+                    }
+                }
+
+                g2d.setColor(Color.black);
                 int fontSize = (int) (rWidth / 1.5);
                 Font f = new Font("Dialog", Font.BOLD, fontSize);
                 g2d.setFont(f);
@@ -185,7 +215,7 @@ public class BasicFrame extends JFrame implements ActionListener {
             timer.stop();
             rX = 0;
             count = rectNumberSlider.getValue();
-            Collections.shuffle(sortingList);
+            randomList = getRandomList(count);
             bubbleSort.j = 0;
             bubbleSort.k = count - 1;
             start.setText("Start");

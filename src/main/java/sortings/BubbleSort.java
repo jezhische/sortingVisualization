@@ -7,8 +7,8 @@ import java.util.Collections;
  * Created by Ежище on 12.10.2016.
  */
 public class BubbleSort {
-    private int count = 70;
-    private ArrayList<Integer> series;
+    private int count;
+//    private ArrayList<Integer> series;
     public int j;
     public int k;
 
@@ -16,44 +16,44 @@ public class BubbleSort {
         this.count = count;
     }
 
-    private ArrayList<Integer> getRandomList() {
-        ArrayList<Integer> randomList = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            randomList.add(i);
-        }
-        Collections.shuffle(randomList);
-        return randomList;
-    }
+//    private ArrayList<Integer> getRandomList() {
+//        ArrayList<Integer> randomList = new ArrayList<>();
+//        for (int i = 0; i < count; i++) {
+//            randomList.add(i);
+//        }
+//        Collections.shuffle(randomList);
+//        return randomList;
+//    }
 
     {
-        series = getRandomList();
+//        series = getRandomList();
         j = 0;
 //        k = series.size() - 1;
         k = count - 1;
     }
 
-    public ArrayList<Integer> sort() {
+    public ArrayList<Integer> sort(ArrayList<Integer> randomList) {
 //        series = getRandomList(count);
         if (j < k) {
-            if (series.get(j) > series.get(j + 1)) {
-                Collections.swap(series, j, j + 1);
+            if (randomList.get(j) > randomList.get(j + 1)) {
+                Collections.swap(randomList, j, j + 1);
                 j++;
-            } else if (series.get(j) < series.get(j + 1))
+            } else if (randomList.get(j) < randomList.get(j + 1))
                 j++;
 
         } else if (j == k) {
             k--;
             j = 0;
-            if (series.get(j) > series.get(j + 1)) {
-                Collections.swap(series, j, j + 1);
+            if (randomList.get(j) > randomList.get(j + 1)) {
+                Collections.swap(randomList, j, j + 1);
                 j++;
-            } else if (series.get(j) < series.get(j + 1))
+            } else if (randomList.get(j) < randomList.get(j + 1))
                 j++;
         }
-        else if (k == 1)
-//            series = series;
-            return series;
-        return series;
+//        else if (k == 0)
+////            series = series;
+//            return randomList;
+        return randomList;
     }
 
 //    public static void main(String[] args) {
