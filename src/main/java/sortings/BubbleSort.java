@@ -6,33 +6,26 @@ import java.util.Collections;
 /**
  * Created by Ежище on 12.10.2016.
  */
-public class BubbleSort {
+public class BubbleSort extends ParentSorter {
+    /** количество элементов - параметр для инстанциирования */
     private int count;
-    //    private ArrayList<Integer> series;
-    public int j;
-    public int k;
+    /** индекс элемента, который при данной прорисовке сравнивается со следующим в списке (индекс пузырька) */
+//    public int j;
+    /** индекс элемента, до которого движется пузырек (справа от него все элементы уже отсортированы) */
+//    public int k;
+    /** чтобы при первой прорисовке списка он не был сразу сортированным на 1 шаг */
+    public int transit = 0;
 
     public BubbleSort(int count) {
         this.count = count;
     }
-
-//    private ArrayList<Integer> getRandomList() {
-//        ArrayList<Integer> randomList = new ArrayList<>();
-//        for (int i = 0; i < count; i++) {
-//            randomList.add(i);
-//        }
-//        Collections.shuffle(randomList);
-//        return randomList;
+//    {  // первичная инициализация
+//        j = 0;
+//        k = count - 1;
 //    }
 
-    {
-        j = 0;
-        k = count - 1;
-    }
-    public int transit = 0;
-
+    @Override
     public ArrayList<Integer> sort(ArrayList<Integer> randomList) {
-//        series = getRandomList(count);
         if (j == 0 && transit == 0) {
             transit++;
             return randomList;
@@ -52,17 +45,6 @@ public class BubbleSort {
             } else if (randomList.get(j) < randomList.get(j + 1))
                 j++;
         }
-//        else if (k == 0)
-////            series = series;
-//            return randomList;
         return randomList;
     }
-
-//    public static void main(String[] args) {
-//        ArrayList<Integer> arr = new BubbleSort(25).sort();
-//
-//        for (int x : arr) {
-//            System.out.print(x + ", ");
-//        }
-//    }
 }

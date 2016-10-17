@@ -6,7 +6,7 @@ import java.util.Collections;
 /**
  * Created by WORK on 12.10.2016.
  */
-public class RandomGenerator {
+public class RandomGenerator extends ParentSorter {
 //    private int count, yShift, frameWidth, frameHeight, rX;
 //        private ArrayList<Integer> randomList;
     public ArrayList<Integer> getRandomList(int count) {

@@ -1,8 +1,6 @@
 package basicFrame;
 
 import sortings.BubbleSort;
-import sortings.ParentSorter;
-import sortings.RandomGenerator;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -18,7 +16,7 @@ import java.util.Collections;
 /**
  * Created by WORK on 12.10.2016.
  */
-public class BasicFrame extends JFrame implements ActionListener {
+public class BasicFrameAuxiliary extends JFrame implements ActionListener {
 
     //    private Timer timer;
     private GridBagConstraints gridBag = new GridBagConstraints();
@@ -26,8 +24,7 @@ public class BasicFrame extends JFrame implements ActionListener {
     private JButton reset;
     private JSlider rectNumberSlider;
     private JSlider delaySlider;
-    private RandRect topVisualPane;
-    private RandRect bottomVisualPane;
+    private RandRect randRects;
     private int frameWidth;
     private int frameHeight;
     private int yShift;
@@ -36,40 +33,32 @@ public class BasicFrame extends JFrame implements ActionListener {
     private int rX;
     private int count;
     private int delay;
-    private BubbleSort bubbleSort;
-    private RandomGenerator randomGenerator;
-    private int iterationCounter;
 
-    /** Метод для создания динамических (обновляющихся) элементов окна. Не может быть вынесен в конструктор,
-     * так как в конструкторе элементы создаются один раз при создании образца класса и не могут обновляться.
-     * Вся статика (главная панель, кнопки и шкалы), напротив, вынесена в конструктор*/
     public void addComponentsToPane() {
 
-        topVisualPane = new RandRect(bubbleSort);
+//        getContentPane().setLayout(new GridBagLayout());
+//        gridBag = new GridBagConstraints();
+
+        randRects = new RandRect();
         gridBag.fill = GridBagConstraints.HORIZONTAL;
         gridBag.gridx = 0;
         gridBag.gridy = 0;
-        gridBag.ipady = yShift;
+        gridBag.ipady = 300;
         gridBag.weightx = 1;
         gridBag.weighty = 1;
-        getContentPane().add(topVisualPane, gridBag);
 
-        bottomVisualPane = new RandRect(randomGenerator);
-//        gridBag.fill = GridBagConstraints.HORIZONTAL;
-        gridBag.gridx = 0;
-        gridBag.gridy = 1;
-        gridBag.ipady = yShift;
-        gridBag.weightx = 1;
-        gridBag.weighty = 1;
-        getContentPane().add(bottomVisualPane, gridBag);
+        getContentPane().add(randRects, gridBag);
+
     }
 
-    public BasicFrame() {
+    public BasicFrameAuxiliary() {
+
+//        getContentPane().setLayout(new GridBagLayout());
 
         frameWidth = 1300;
-        frameHeight = 750;
-        yShift = 270;
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frameHeight = 700;
+        yShift = 300;
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridBagLayout());
         setVisible(true);
         setSize(frameWidth, frameHeight);
@@ -92,7 +81,7 @@ public class BasicFrame extends JFrame implements ActionListener {
         delaySlider.setMinorTickSpacing(1);
         delaySlider.setPaintTicks(true);
         delaySlider.setPaintLabels(true);
-        delaySlider.setSnapToTicks(false);
+        delaySlider.setSnapToTicks(true);
         delaySlider.setBorder(new TitledBorder("delay"));
         delaySlider.addChangeListener(new ChangeListener() {
             @Override
@@ -109,7 +98,7 @@ public class BasicFrame extends JFrame implements ActionListener {
         gridBag.fill = GridBagConstraints.HORIZONTAL;
 //            gridBag.ipady = 50;
         gridBag.gridx = 0;
-        gridBag.gridy = 5;
+        gridBag.gridy = 4;
         gridBag.weightx = 1;
         gridBag.weighty = 1;
 
@@ -122,7 +111,7 @@ public class BasicFrame extends JFrame implements ActionListener {
     }
 
     private ArrayList<Integer> getRandomList(int count) {
-//        this.count = count;
+        this.count = count;
         ArrayList<Integer> randomList = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
             randomList.add(i);
@@ -131,35 +120,14 @@ public class BasicFrame extends JFrame implements ActionListener {
         return randomList;
     }
 
-    /** фабричный метод для использования разных сортировок */
-private ParentSorter sortFactory(ParentSorter sorter) {
-//    if (sorter instanceof BubbleSort)
-//        sorter = (BubbleSort)sorter;
-    return sorter;
-}
+    {randomList = getRandomList(count);}
 
-    // инициализация рандомизированного списка:
-//    {
-//        randomList = getRandomList(count);
-//    }
-    // инициализация образцов сортировок:
-    {
-        bubbleSort = new BubbleSort(count);
-        randomGenerator = new RandomGenerator();
-//        iterationCounter += ParentSorter.j;
-    }
+    BubbleSort bubbleSort = new BubbleSort(count);
 
-// вложенный класс для отрисовки списка в виде ряда прямоугольников
     private class RandRect extends JComponent {
 
-    ParentSorter sorter;
-    RandRect(ParentSorter sorter) {this.sorter = sorter;}
-        {
-            randomList = getRandomList(count);
-//            bubbleSort.k = count - 1;
-            ParentSorter.k = count - 1;
-//            sorter.k = count - 1;
-        }
+        {randomList = getRandomList(count);
+            bubbleSort.k = count - 1;}
 
         @Override
         protected void paintComponent(Graphics g) {
@@ -172,19 +140,14 @@ private ParentSorter sortFactory(ParentSorter sorter) {
 
             g2d.clearRect(0, 0, frameWidth, frameHeight);
 
-//            int dataFontSize = (int) (frameWidth / 60);
-//            Font dataFont = new Font("TimesNewRoman", Font.BOLD, dataFontSize);
-//            g2d.setFont(dataFont);
-//            g2d.drawString("delay " + String.valueOf(delaySlider.getValue()) + "μs", frameWidth / 20, frameHeight / 10);
-
-
 
             int rHeight, rWidth, coefficient;
             rWidth = (int) ((frameWidth - 1) / count);
             coefficient = (int) ((yShift) / count);
 
 //            sortingList = new RandomGenerator().getRandomList(count);
-            sortingList = sorter.sort(randomList);
+            sortingList = bubbleSort.sort(randomList);
+
             for (int i = 0; i < count; i++) {
                 rHeight = -((sortingList.get(i) * coefficient));
                 rX = i * rWidth;
@@ -193,15 +156,15 @@ private ParentSorter sortFactory(ParentSorter sorter) {
                 g2d.setColor(Color.YELLOW);
                 g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
 
-                if (i == ParentSorter.j) {
+                if (i == bubbleSort.j) {
                     g2d.setColor(Color.RED);
                     g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
                 }
-                if (i == ParentSorter.k) {
+                if (i == bubbleSort.k) {
                     g2d.setColor(Color.GREEN);
                     g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
                 }
-                if (ParentSorter.k == 0) {
+                if (bubbleSort.k == 0) {
                     for (int n = 0; n < count; n++) {
                         rHeight = -((sortingList.get(n) * coefficient));
                         rX = n * rWidth;
@@ -216,7 +179,6 @@ private ParentSorter sortFactory(ParentSorter sorter) {
                         int stringYCoordinate = yShift - (int) (fontMetrics.getHeight() + 10);
                         g2d.drawString(String.valueOf(sortingList.get(n)), stringXCoordinate, stringYCoordinate);
                     }
-                    timer.stop();
                 }
 
                 g2d.setColor(Color.black);
@@ -227,38 +189,17 @@ private ParentSorter sortFactory(ParentSorter sorter) {
                 int stringXCoordinate = rX + rWidth / 2 - fontMetrics.stringWidth(String.valueOf(sortingList.get(i))) / 2;
                 int stringYCoordinate = yShift - (int) (fontMetrics.getHeight() + 10);
                 g2d.drawString(String.valueOf(sortingList.get(i)), stringXCoordinate, stringYCoordinate);
-
-//                int dataFontSize = (int) (frameWidth / 60);
-//                Font dataFont = new Font("TimesNewRoman", Font.BOLD, dataFontSize);
-//                g2d.setFont(dataFont);
-//                g2d.setColor(Color.RED);
-//                g2d.drawString("iteration number " + String.valueOf(i), frameWidth / 80,
-//                        frameHeight / 10 + 2 * frameWidth / 60 + 5);
-
+//                sortingList = bubbleSort.sort();
             }
-            int dataFontSize = (int) (frameWidth / 80);
-            Font dataFont = new Font("TimesNewRoman", Font.BOLD, dataFontSize);
-            g2d.setFont(dataFont);
-            g2d.setColor(Color.BLUE);
-            g2d.drawString("delay " + String.valueOf(delaySlider.getValue()) + "μs", frameWidth / 80, frameHeight / 10);
-            g2d.drawString("series " + String.valueOf(count) + "items", frameWidth / 80,
-                    frameHeight / 10 + frameWidth / 80 + 5);
-            g2d.setColor(Color.RED);
-            if (ParentSorter.k == 0)
-                iterationCounter--;
-            g2d.drawString("iteration number " + String.valueOf(iterationCounter  / 2), frameWidth / 80,
-                    frameHeight / 10 + 2 * frameWidth / 80 + 5);
-            iterationCounter++;
-
         }
     }
 
+    //    rectNumberSlider.getValueIsAdjusting()
     private Timer timer = new Timer(delay, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
 //            count = rectNumberSlider.getValue();
-            topVisualPane.repaint();
-            bottomVisualPane.repaint();
+            randRects.repaint();
         }
     });
 
@@ -275,18 +216,16 @@ private ParentSorter sortFactory(ParentSorter sorter) {
             rX = 0;
             count = rectNumberSlider.getValue();
             randomList = getRandomList(count);
-            iterationCounter = 0;
-            ParentSorter.j = 0;
+            bubbleSort.j = 0;
             bubbleSort.transit = 0;
-            ParentSorter.k = count - 1;
+            bubbleSort.k = count - 1;
             start.setText("Start");
-            topVisualPane.repaint();
-            bottomVisualPane.repaint();
+            randRects.repaint();
         }
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new BasicFrame().addComponentsToPane());
+        SwingUtilities.invokeLater(() -> new BasicFrameAuxiliary().addComponentsToPane());
 //        getRandomList(20);
     }
 }
