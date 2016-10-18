@@ -10,5 +10,6 @@ public abstract class ParentSorter {
     public static int j = 0;
     /** индекс элемента, до которого движется пузырек (справа от него все элементы уже отсортированы) */
     public static int k;
+//    public int count;
     public ArrayList<Integer> sort(ArrayList<Integer> randomList){return randomList;}
 }

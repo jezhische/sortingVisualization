@@ -122,7 +122,7 @@ public class BasicFrameAuxiliary extends JFrame implements ActionListener {
 
     {randomList = getRandomList(count);}
 
-    BubbleSort bubbleSort = new BubbleSort(count);
+    BubbleSort bubbleSort = new BubbleSort();
 
     private class RandRect extends JComponent {
 
