@@ -1,6 +1,8 @@
 package basicFrame;
 
 import sortings.BubbleSort;
+import sortings.ParentSorter;
+import sortings.RandomGenerator;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -18,48 +20,35 @@ import java.util.concurrent.Callable;
  * Created by WORK on 12.10.2016.
  */
 public class BasicFrameCallableAuxiliary extends JFrame implements ActionListener {
-
-    //    private Timer timer;
+    //    private Timer upperTimer;
     private GridBagConstraints gridBag = new GridBagConstraints();
     private JButton start;
     private JButton reset;
     private JSlider rectNumberSlider;
     private JSlider delaySlider;
-    private RandRect randRects;
+    private BasicFrameCallableAuxiliary.UpperRandRect upperVisualPane;
+    private BasicFrameCallableAuxiliary.LowerRandRect lowerVisualPane;
     private int frameWidth;
     private int frameHeight;
     private int yShift;
-    private ArrayList<Integer> sortingList;
+    //    private ArrayList<Integer> sortingList;
     private ArrayList<Integer> randomList;
+    private ArrayList<Integer> randList;
     private int rX;
     private int count;
     private int delay;
+    private BubbleSort bubbleSort;
+    private RandomGenerator randomGenerator;
+    private int iterationCounter;
 
-    public void addComponentsToPane() {
 
-//        getContentPane().setLayout(new GridBagLayout());
-//        gridBag = new GridBagConstraints();
-
-        randRects = new RandRect();
-        gridBag.fill = GridBagConstraints.HORIZONTAL;
-        gridBag.gridx = 0;
-        gridBag.gridy = 0;
-        gridBag.ipady = 300;
-        gridBag.weightx = 1;
-        gridBag.weighty = 1;
-
-        getContentPane().add(randRects, gridBag);
-
-    }
-
+    // конструктор класса
     public BasicFrameCallableAuxiliary() {
 
-//        getContentPane().setLayout(new GridBagLayout());
-
         frameWidth = 1300;
-        frameHeight = 700;
-        yShift = 300;
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frameHeight = 750;
+        yShift = 270;
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(new GridBagLayout());
         setVisible(true);
         setSize(frameWidth, frameHeight);
@@ -69,7 +58,7 @@ public class BasicFrameCallableAuxiliary extends JFrame implements ActionListene
         reset = new JButton("Reset");
         reset.addActionListener(this);
 
-        rectNumberSlider = new JSlider(JSlider.HORIZONTAL, 10, 300, 70);
+        rectNumberSlider = new JSlider(JSlider.HORIZONTAL, 10, yShift + 100, 70);
         rectNumberSlider.setMajorTickSpacing(20);
         rectNumberSlider.setMinorTickSpacing(5);
         rectNumberSlider.setPaintTicks(true);
@@ -77,29 +66,35 @@ public class BasicFrameCallableAuxiliary extends JFrame implements ActionListene
         rectNumberSlider.setSnapToTicks(true);
         rectNumberSlider.setBorder(new TitledBorder("number of items to be sorted (press \"Reset\" after setting)"));
 
-        delaySlider = new JSlider(JSlider.HORIZONTAL, 1, 100, 10);
+        delaySlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 30);
         delaySlider.setMajorTickSpacing(5);
         delaySlider.setMinorTickSpacing(1);
         delaySlider.setPaintTicks(true);
         delaySlider.setPaintLabels(true);
-        delaySlider.setSnapToTicks(true);
+        delaySlider.setSnapToTicks(false);
         delaySlider.setBorder(new TitledBorder("delay"));
         delaySlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                timer.setDelay(delaySlider.getValue());
+                upperTimer.setDelay(delaySlider.getValue());
+                lowerTimer.setDelay(delaySlider.getValue());
             }
         });
 
         delay = delaySlider.getValue();
-        count = rectNumberSlider.getValue();
+        bubbleSort = new BubbleSort();
+        randomGenerator = new RandomGenerator();
+//        count = getCount();
+        randomList = getRandomList(count);
+        randList = getRandList();
+//        count = rectNumberSlider.getValue();
 
         Box buttons = Box.createHorizontalBox();
         buttons.setBorder(new EtchedBorder(Color.BLUE, Color.BLUE));
         gridBag.fill = GridBagConstraints.HORIZONTAL;
 //            gridBag.ipady = 50;
         gridBag.gridx = 0;
-        gridBag.gridy = 4;
+        gridBag.gridy = 5;
         gridBag.weightx = 1;
         gridBag.weighty = 1;
 
@@ -111,8 +106,34 @@ public class BasicFrameCallableAuxiliary extends JFrame implements ActionListene
         add(buttons, gridBag);
     }
 
+    /**
+     * Метод для создания динамических (обновляющихся) элементов окна. Не может быть вынесен в конструктор,
+     * так как в конструкторе элементы создаются один раз при создании образца класса и не могут обновляться.
+     * Вся статика (главная панель, кнопки и шкалы), напротив, вынесена в конструктор
+     */
+    public void addComponentsToPane() {
+
+        upperVisualPane = new BasicFrameCallableAuxiliary.UpperRandRect(bubbleSort);
+        gridBag.fill = GridBagConstraints.HORIZONTAL;
+        gridBag.gridx = 0;
+        gridBag.gridy = 0;
+        gridBag.ipady = yShift;
+        gridBag.weightx = 1;
+        gridBag.weighty = 1;
+        getContentPane().add(upperVisualPane, gridBag);
+
+        lowerVisualPane = new BasicFrameCallableAuxiliary.LowerRandRect(randomGenerator);
+//        gridBag.fill = GridBagConstraints.HORIZONTAL;
+        gridBag.gridx = 0;
+        gridBag.gridy = 1;
+        gridBag.ipady = yShift;
+        gridBag.weightx = 1;
+        gridBag.weighty = 1;
+        getContentPane().add(lowerVisualPane, gridBag);
+    }
+
     private ArrayList<Integer> getRandomList(int count) {
-        this.count = count;
+//        this.count = count;
         ArrayList<Integer> randomList = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
             randomList.add(i);
@@ -121,17 +142,29 @@ public class BasicFrameCallableAuxiliary extends JFrame implements ActionListene
         return randomList;
     }
 
-    {randomList = getRandomList(count);}
+    private int getCount() {
+        return rectNumberSlider.getValue();
+    }
 
-    BubbleSort bubbleSort = new BubbleSort();
+    private ArrayList<Integer> getRandList() {
+        ArrayList<Integer> randList = new ArrayList<>(count);
+        for (int i = 0; i < count; i++) {
+            randList.add(randomList.get(i));
+        }
+        return randList;
+    }
 
 
 
-
-    private class RandRect extends JComponent implements Callable<ArrayList<Integer>> {
-
-        {randomList = getRandomList(count);
-            bubbleSort.k = count - 1;}
+    /**
+     * вложенный класс для отрисовки списка верхней панели в виде ряда прямоугольников
+     */
+    private class UpperRandRect extends JComponent {
+        ParentSorter sorter;
+        UpperRandRect(ParentSorter sorter) {
+            this.sorter = sorter;
+            sorter.k = count - 1;
+        }
 
         @Override
         protected void paintComponent(Graphics g) {
@@ -141,38 +174,34 @@ public class BasicFrameCallableAuxiliary extends JFrame implements ActionListene
             g2d.setBackground(Color.PINK);
             frameWidth = this.getWidth();
             frameHeight = this.getHeight();
-
             g2d.clearRect(0, 0, frameWidth, frameHeight);
 
-
-            int rHeight, rWidth, coefficient;
+            int rHeight, rWidth;
+            int coefficient;
             rWidth = (int) ((frameWidth - 1) / count);
-            coefficient = (int) ((yShift) / count);
+            coefficient = (int)(2 * (yShift) / count);
 
-//            sortingList = new RandomGenerator().getRandomList(count);
-            sortingList = bubbleSort.sort(randomList);
-
+            /** sortingList - это список, который меняется после каждой сортировки */
+            ArrayList<Integer> sortingList = sorter.sort(randList);
             for (int i = 0; i < count; i++) {
-//                if (bubbleSort.k !=0 && bubbleSort.k % 5 != 0)
-//                    sortingList = bubbleSort.sort(randomList);
-                rHeight = -((sortingList.get(i) * coefficient));
+                rHeight = -(int) ((sortingList.get(i) * coefficient) / 2);
                 rX = i * rWidth;
                 g2d.setColor(Color.BLUE);
                 g2d.drawRect(rX, yShift, rWidth, rHeight - 4);
                 g2d.setColor(Color.YELLOW);
                 g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
 
-                if (i == bubbleSort.j) {
+                if (i == sorter.j) {
                     g2d.setColor(Color.RED);
                     g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
                 }
-                if (i == bubbleSort.k) {
+                if (i == sorter.k) {
                     g2d.setColor(Color.GREEN);
                     g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
                 }
-                if (bubbleSort.k == 0) {
+                if (sorter.k == 0) {
                     for (int n = 0; n < count; n++) {
-                        rHeight = -((sortingList.get(n) * coefficient));
+                        rHeight = -(int) ((sortingList.get(n) * coefficient) / 2);
                         rX = n * rWidth;
                         g2d.setColor(Color.GREEN);
                         g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
@@ -185,6 +214,7 @@ public class BasicFrameCallableAuxiliary extends JFrame implements ActionListene
                         int stringYCoordinate = yShift - (int) (fontMetrics.getHeight() + 10);
                         g2d.drawString(String.valueOf(sortingList.get(n)), stringXCoordinate, stringYCoordinate);
                     }
+                    upperTimer.stop();
                 }
 
                 g2d.setColor(Color.black);
@@ -195,43 +225,153 @@ public class BasicFrameCallableAuxiliary extends JFrame implements ActionListene
                 int stringXCoordinate = rX + rWidth / 2 - fontMetrics.stringWidth(String.valueOf(sortingList.get(i))) / 2;
                 int stringYCoordinate = yShift - (int) (fontMetrics.getHeight() + 10);
                 g2d.drawString(String.valueOf(sortingList.get(i)), stringXCoordinate, stringYCoordinate);
-//                sortingList = bubbleSort.sort();
             }
-        }
 
-        @Override
-        public ArrayList<Integer> call() throws Exception {
-            return null;
+            int dataFontSize = (int) (frameWidth / 80);
+            Font dataFont = new Font("TimesNewRoman", Font.BOLD, dataFontSize);
+            g2d.setFont(dataFont);
+            g2d.setColor(Color.BLUE);
+            g2d.drawString("delay " + String.valueOf(delaySlider.getValue()) + "μs", frameWidth / 80, frameHeight / 10);
+            g2d.drawString("series " + String.valueOf(count) + "items", frameWidth / 80,
+                    frameHeight / 10 + frameWidth / 80 + 5);
+            g2d.setColor(Color.RED);
+            if (sorter.k == 0)
+                iterationCounter--;
+            g2d.drawString("iteration number " + String.valueOf(iterationCounter / 2), frameWidth / 80,
+                    frameHeight / 10 + 2 * frameWidth / 80 + 5);
+            iterationCounter++;
+
         }
     }
 
-    //    rectNumberSlider.getValueIsAdjusting()
-    private Timer timer = new Timer(delay, new ActionListener() {
+    /**
+     * вложенный класс для отрисовки списка нижней панели в виде ряда прямоугольников
+     */
+    private class LowerRandRect extends JComponent {
+        ParentSorter sorter;
+
+        LowerRandRect(ParentSorter sorter) {
+            this.sorter = sorter;
+            sorter.k = count - 1;
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2d = (Graphics2D) g;
+
+            g2d.setBackground(Color.PINK);
+            frameWidth = this.getWidth();
+            frameHeight = this.getHeight();
+            g2d.clearRect(0, 0, frameWidth, frameHeight);
+
+            int rHeight, rWidth;
+            double coefficient;
+            rWidth = (int) ((frameWidth - 1) / count);
+            coefficient = (int)(2 * (yShift) / count);
+
+            /** sortingList - это список, который меняется после каждой сортировки */
+            ArrayList<Integer> sortingList = sorter.sort(randomList);
+            for (int i = 0; i < count; i++) {
+                rHeight = -(int) ((sortingList.get(i) * coefficient) / 2);
+                rX = i * rWidth;
+                g2d.setColor(Color.BLUE);
+                g2d.drawRect(rX, yShift, rWidth, rHeight - 4);
+                g2d.setColor(Color.YELLOW);
+                g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
+
+                if (i == sorter.j) {
+                    g2d.setColor(Color.RED);
+                    g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
+                }
+                if (i == sorter.k) {
+                    g2d.setColor(Color.GREEN);
+                    g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
+                }
+                if (sorter.k == 0) {
+                    for (int n = 0; n < count; n++) {
+                        rHeight = -(int) ((sortingList.get(n) * coefficient) / 2);
+                        rX = n * rWidth;
+                        g2d.setColor(Color.GREEN);
+                        g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
+                        g2d.setColor(Color.black);
+                        int fontSize = (int) (rWidth / 1.5);
+                        Font f = new Font("Dialog", Font.BOLD, fontSize);
+                        g2d.setFont(f);
+                        FontMetrics fontMetrics = g2d.getFontMetrics();
+                        int stringXCoordinate = rX + rWidth / 2 - fontMetrics.stringWidth(String.valueOf(sortingList.get(n))) / 2;
+                        int stringYCoordinate = yShift - (int) (fontMetrics.getHeight() + 10);
+                        g2d.drawString(String.valueOf(sortingList.get(n)), stringXCoordinate, stringYCoordinate);
+                    }
+                    lowerTimer.stop();
+                }
+
+                g2d.setColor(Color.black);
+                int fontSize = (int) (rWidth / 1.5);
+                Font f = new Font("Dialog", Font.BOLD, fontSize);
+                g2d.setFont(f);
+                FontMetrics fontMetrics = g2d.getFontMetrics();
+                int stringXCoordinate = rX + rWidth / 2 - fontMetrics.stringWidth(String.valueOf(sortingList.get(i))) / 2;
+                int stringYCoordinate = yShift - (int) (fontMetrics.getHeight() + 10);
+                g2d.drawString(String.valueOf(sortingList.get(i)), stringXCoordinate, stringYCoordinate);
+            }
+
+            int dataFontSize = (int) (frameWidth / 80);
+            Font dataFont = new Font("TimesNewRoman", Font.BOLD, dataFontSize);
+            g2d.setFont(dataFont);
+            g2d.setColor(Color.BLUE);
+            g2d.drawString("delay " + String.valueOf(delaySlider.getValue()) + "μs", frameWidth / 80, frameHeight / 10);
+            g2d.drawString("series " + String.valueOf(count) + "items", frameWidth / 80,
+                    frameHeight / 10 + frameWidth / 80 + 5);
+            g2d.setColor(Color.RED);
+            if (sorter.k == 0)
+                iterationCounter--;
+            g2d.drawString("iteration number " + String.valueOf(iterationCounter / 2), frameWidth / 80,
+                    frameHeight / 10 + 2 * frameWidth / 80 + 5);
+            iterationCounter++;
+
+        }
+    }
+
+    private Timer upperTimer = new Timer(delay, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-//            count = rectNumberSlider.getValue();
-            randRects.repaint();
+            upperVisualPane.repaint();
+        }
+    });
+    private Timer lowerTimer = new Timer(delay, new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            lowerVisualPane.repaint();
         }
     });
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Start")) {
-            timer.start();
+            upperTimer.start();
+            lowerTimer.start();
             start.setText("Pause");
         } else if (e.getActionCommand().equals("Pause")) {
-            timer.stop();
+            upperTimer.stop();
+            lowerTimer.stop();
             start.setText("Start");
         } else if (e.getActionCommand().equals("Reset")) {
-            timer.stop();
+            upperTimer.stop();
+            lowerTimer.stop();
             rX = 0;
             count = rectNumberSlider.getValue();
             randomList = getRandomList(count);
+            randList = getRandList();
+//            upperVisualPane = new UpperRandRect(bubbleSort);
+            iterationCounter = 0;
             bubbleSort.j = 0;
+//            randomGenerator.j = 0;
             bubbleSort.transit = 0;
             bubbleSort.k = count - 1;
             start.setText("Start");
-            randRects.repaint();
+            upperVisualPane.repaint();
+            lowerVisualPane.repaint();
         }
     }
 

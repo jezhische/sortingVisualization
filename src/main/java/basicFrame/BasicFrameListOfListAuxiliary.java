@@ -68,7 +68,7 @@ public class BasicFrameListOfListAuxiliary extends JFrame implements ActionListe
         reset = new JButton("Reset");
         reset.addActionListener(this);
 
-        rectNumberSlider = new JSlider(JSlider.HORIZONTAL, 10, 300, 70);
+        rectNumberSlider = new JSlider(JSlider.HORIZONTAL, 10, 500, 70);
         rectNumberSlider.setMajorTickSpacing(20);
         rectNumberSlider.setMinorTickSpacing(5);
         rectNumberSlider.setPaintTicks(true);
@@ -76,7 +76,7 @@ public class BasicFrameListOfListAuxiliary extends JFrame implements ActionListe
         rectNumberSlider.setSnapToTicks(true);
         rectNumberSlider.setBorder(new TitledBorder("number of items to be sorted (press \"Reset\" after setting)"));
 
-        delaySlider = new JSlider(JSlider.HORIZONTAL, 1, 100, 10);
+        delaySlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 30);
         delaySlider.setMajorTickSpacing(5);
         delaySlider.setMinorTickSpacing(1);
         delaySlider.setPaintTicks(true);
@@ -151,7 +151,7 @@ public class BasicFrameListOfListAuxiliary extends JFrame implements ActionListe
 
             int rHeight, rWidth, coefficient;
             rWidth = (int) ((frameWidth - 1) / count);
-            coefficient = (int) ((yShift) / count);
+            coefficient = (int) ((yShift) * 2 / count);
 
 //            sortingList = new RandomGenerator().getRandomList(count);
             ArrayList<ArrayList<Integer>> sortedList = bubbleSort.getSortedList(randomList);
@@ -161,7 +161,7 @@ public class BasicFrameListOfListAuxiliary extends JFrame implements ActionListe
             for (int i = 0; i < count; i++) {
 //                if (bubbleSort.k !=0 && bubbleSort.k % 5 != 0)
 //                    sortingList = bubbleSort.sort(randomList);
-                rHeight = -((sortingList.get(i) * coefficient));
+                rHeight = -(int)((sortingList.get(i) * coefficient) / 2);
                 rX = i * rWidth;
                 g2d.setColor(Color.BLUE);
                 g2d.drawRect(rX, yShift, rWidth, rHeight - 4);

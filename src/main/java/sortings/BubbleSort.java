@@ -14,7 +14,7 @@ public class BubbleSort extends ParentSorter {
     /** индекс элемента, до которого движется пузырек (справа от него все элементы уже отсортированы) */
 //    public int k;
     /** чтобы при первой прорисовке списка он не был сразу сортированным на 1 шаг */
-    public int transit = 0;
+//    public int transit = 0;
 
 //    public BubbleSort(int count) {
 //        this.count = count;

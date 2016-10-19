@@ -58,30 +58,8 @@ public class BasicFrame extends JFrame implements ActionListener {
         reset = new JButton("Reset");
         reset.addActionListener(this);
 
-        rectNumberSlider = new JSlider(JSlider.HORIZONTAL, 10, 300, 70);
-        rectNumberSlider.setMajorTickSpacing(20);
-        rectNumberSlider.setMinorTickSpacing(5);
-        rectNumberSlider.setPaintTicks(true);
-        rectNumberSlider.setPaintLabels(true);
-        rectNumberSlider.setSnapToTicks(true);
-        rectNumberSlider.setBorder(new TitledBorder("number of items to be sorted (press \"Reset\" after setting)"));
+        addJSliders();
 
-        delaySlider = new JSlider(JSlider.HORIZONTAL, 1, 100, 10);
-        delaySlider.setMajorTickSpacing(5);
-        delaySlider.setMinorTickSpacing(1);
-        delaySlider.setPaintTicks(true);
-        delaySlider.setPaintLabels(true);
-        delaySlider.setSnapToTicks(false);
-        delaySlider.setBorder(new TitledBorder("delay"));
-        delaySlider.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                upperTimer.setDelay(delaySlider.getValue());
-                lowerTimer.setDelay(delaySlider.getValue());
-            }
-        });
-
-        delay = delaySlider.getValue();
         bubbleSort = new BubbleSort();
         randomGenerator = new RandomGenerator();
         count = getCount();
@@ -104,19 +82,19 @@ public class BasicFrame extends JFrame implements ActionListener {
         buttons.add(delaySlider);
 
         add(buttons, gridBag);
+        addComponentsToPane();
     }
 
     /**
-     * Метод для создания динамических (обновляющихся) элементов окна. Не может быть вынесен в конструктор,
-     * так как в конструкторе элементы создаются один раз при создании образца класса и не могут обновляться.
-     * Вся статика (главная панель, кнопки и шкалы), напротив, вынесена в конструктор
+     * Метод для создания динамических (обновляющихся) элементов окна. В принципе, можно было оставить его
+     * в конструкторе, но конструктор оказывался слишком массивным.
      */
-    public void addComponentsToPane() {
+    private void addComponentsToPane() {
 
         upperVisualPane = new UpperRandRect(bubbleSort);
         gridBag.fill = GridBagConstraints.HORIZONTAL;
         gridBag.gridx = 0;
-        gridBag.gridy = 0;
+        gridBag.gridy = 1;
         gridBag.ipady = yShift;
         gridBag.weightx = 1;
         gridBag.weighty = 1;
@@ -125,11 +103,37 @@ public class BasicFrame extends JFrame implements ActionListener {
         lowerVisualPane = new LowerRandRect(randomGenerator);
 //        gridBag.fill = GridBagConstraints.HORIZONTAL;
         gridBag.gridx = 0;
-        gridBag.gridy = 1;
+        gridBag.gridy = 3;
         gridBag.ipady = yShift;
         gridBag.weightx = 1;
         gridBag.weighty = 1;
         getContentPane().add(lowerVisualPane, gridBag);
+    }
+
+    /** Метод для создания ползунков, вынесен из конструктора/, чтобы его не перегружатью */
+    private void addJSliders() {
+        rectNumberSlider = new JSlider(JSlider.HORIZONTAL, 10, yShift + 100, 70);
+        rectNumberSlider.setMajorTickSpacing(20);
+        rectNumberSlider.setMinorTickSpacing(5);
+        rectNumberSlider.setPaintTicks(true);
+        rectNumberSlider.setPaintLabels(true);
+        rectNumberSlider.setSnapToTicks(true);
+        rectNumberSlider.setBorder(new TitledBorder("number of items to be sorted (press \"Reset\" after setting)"));
+
+        delaySlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
+        delaySlider.setMajorTickSpacing(5);
+        delaySlider.setMinorTickSpacing(1);
+        delaySlider.setPaintTicks(true);
+        delaySlider.setPaintLabels(true);
+        delaySlider.setSnapToTicks(false);
+        delaySlider.setBorder(new TitledBorder("delay"));
+        delaySlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                upperTimer.setDelay(delaySlider.getValue());
+                lowerTimer.setDelay(delaySlider.getValue());
+            }
+        });
     }
 
     private ArrayList<Integer> getRandomList(int count) {
@@ -172,17 +176,19 @@ public class BasicFrame extends JFrame implements ActionListener {
             Graphics2D g2d = (Graphics2D) g;
 
             g2d.setBackground(Color.PINK);
+            frameWidth = this.getWidth();
+            frameHeight = this.getHeight();
             g2d.clearRect(0, 0, frameWidth, frameHeight);
 
             int rHeight, rWidth;
-            double coefficient;
+            int coefficient;
             rWidth = (int) ((frameWidth - 1) / count);
-            coefficient = (yShift) / count;
+            coefficient = (int)(2 * (yShift) / count);
 
             /** sortingList - это список, который меняется после каждой сортировки */
             ArrayList<Integer> sortingList = sorter.sort(randList);
             for (int i = 0; i < count; i++) {
-                rHeight = -(int) ((sortingList.get(i) * coefficient));
+                rHeight = -(int) ((sortingList.get(i) * coefficient) / 2);
                 rX = i * rWidth;
                 g2d.setColor(Color.BLUE);
                 g2d.drawRect(rX, yShift, rWidth, rHeight - 4);
@@ -199,7 +205,7 @@ public class BasicFrame extends JFrame implements ActionListener {
                 }
                 if (sorter.k == 0) {
                     for (int n = 0; n < count; n++) {
-                        rHeight = -(int) ((sortingList.get(n) * coefficient));
+                        rHeight = -(int) ((sortingList.get(n) * coefficient) / 2);
                         rX = n * rWidth;
                         g2d.setColor(Color.GREEN);
                         g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
@@ -259,17 +265,19 @@ public class BasicFrame extends JFrame implements ActionListener {
             Graphics2D g2d = (Graphics2D) g;
 
             g2d.setBackground(Color.PINK);
+            frameWidth = this.getWidth();
+            frameHeight = this.getHeight();
             g2d.clearRect(0, 0, frameWidth, frameHeight);
 
             int rHeight, rWidth;
             double coefficient;
             rWidth = (int) ((frameWidth - 1) / count);
-            coefficient = (yShift) / count;
+            coefficient = (int)(2 * (yShift) / count);
 
             /** sortingList - это список, который меняется после каждой сортировки */
             ArrayList<Integer> sortingList = sorter.sort(randomList);
             for (int i = 0; i < count; i++) {
-                rHeight = -(int) ((sortingList.get(i) * coefficient));
+                rHeight = -(int) ((sortingList.get(i) * coefficient) / 2);
                 rX = i * rWidth;
                 g2d.setColor(Color.BLUE);
                 g2d.drawRect(rX, yShift, rWidth, rHeight - 4);
@@ -286,7 +294,7 @@ public class BasicFrame extends JFrame implements ActionListener {
                 }
                 if (sorter.k == 0) {
                     for (int n = 0; n < count; n++) {
-                        rHeight = -(int) ((sortingList.get(n) * coefficient));
+                        rHeight = -(int) ((sortingList.get(n) * coefficient) / 2);
                         rX = n * rWidth;
                         g2d.setColor(Color.GREEN);
                         g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
@@ -362,9 +370,11 @@ public class BasicFrame extends JFrame implements ActionListener {
 //            upperVisualPane = new UpperRandRect(bubbleSort);
             iterationCounter = 0;
             bubbleSort.j = 0;
-//            randomGenerator.j = 0;
+            randomGenerator.j = 0;
             bubbleSort.transit = 0;
+            randomGenerator.transit = 0;
             bubbleSort.k = count - 1;
+            randomGenerator.k = count - 1;
             start.setText("Start");
             upperVisualPane.repaint();
             lowerVisualPane.repaint();
@@ -372,7 +382,7 @@ public class BasicFrame extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new BasicFrame().addComponentsToPane());
+        SwingUtilities.invokeLater(() -> new BasicFrame());
 //        getRandomList(20);
     }
 }

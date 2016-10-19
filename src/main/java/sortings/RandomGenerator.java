@@ -24,6 +24,10 @@ public class RandomGenerator extends ParentSorter {
 
     @Override
     public ArrayList<Integer> sort(ArrayList<Integer> randomList) {
+        if (j == 0 && transit == 0) {
+            transit++;
+            return randomList;
+        }
         Collections.shuffle(randomList);
         return randomList;
     }

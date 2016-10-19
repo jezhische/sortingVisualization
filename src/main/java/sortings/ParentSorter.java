@@ -10,6 +10,8 @@ public abstract class ParentSorter {
     public int j = 0;
     /** индекс элемента, до которого движется пузырек (справа от него все элементы уже отсортированы) */
     public int k;
+    /** чтобы при первой прорисовке списка он не был сразу сортированным на 1 шаг */
+    public int transit = 0;
 //    public int count;
     public ArrayList<Integer> sort(ArrayList<Integer> randomList){return randomList;}
 }
