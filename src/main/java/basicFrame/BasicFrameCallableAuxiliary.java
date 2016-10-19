@@ -12,11 +12,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.concurrent.Callable;
 
 /**
  * Created by WORK on 12.10.2016.
  */
-public class BasicFrameAuxiliary extends JFrame implements ActionListener {
+public class BasicFrameCallableAuxiliary extends JFrame implements ActionListener {
 
     //    private Timer timer;
     private GridBagConstraints gridBag = new GridBagConstraints();
@@ -51,7 +52,7 @@ public class BasicFrameAuxiliary extends JFrame implements ActionListener {
 
     }
 
-    public BasicFrameAuxiliary() {
+    public BasicFrameCallableAuxiliary() {
 
 //        getContentPane().setLayout(new GridBagLayout());
 
@@ -120,12 +121,14 @@ public class BasicFrameAuxiliary extends JFrame implements ActionListener {
         return randomList;
     }
 
+    {randomList = getRandomList(count);}
+
     BubbleSort bubbleSort = new BubbleSort();
 
 
 
 
-    private class RandRect extends JComponent {
+    private class RandRect extends JComponent implements Callable<ArrayList<Integer>> {
 
         {randomList = getRandomList(count);
             bubbleSort.k = count - 1;}
@@ -195,6 +198,11 @@ public class BasicFrameAuxiliary extends JFrame implements ActionListener {
 //                sortingList = bubbleSort.sort();
             }
         }
+
+        @Override
+        public ArrayList<Integer> call() throws Exception {
+            return null;
+        }
     }
 
     //    rectNumberSlider.getValueIsAdjusting()
@@ -228,7 +236,7 @@ public class BasicFrameAuxiliary extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new BasicFrameAuxiliary().addComponentsToPane());
+        SwingUtilities.invokeLater(() -> new BasicFrameCallableAuxiliary().addComponentsToPane());
 //        getRandomList(20);
     }
 }

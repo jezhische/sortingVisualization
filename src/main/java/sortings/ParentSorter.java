@@ -7,9 +7,9 @@ import java.util.ArrayList;
  */
 public abstract class ParentSorter {
     /** индекс элемента, который при данной прорисовке сравнивается со следующим в списке (индекс пузырька) */
-    public static int j = 0;
+    public int j = 0;
     /** индекс элемента, до которого движется пузырек (справа от него все элементы уже отсортированы) */
-    public static int k;
+    public int k;
 //    public int count;
     public ArrayList<Integer> sort(ArrayList<Integer> randomList){return randomList;}
 }

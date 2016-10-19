@@ -1,6 +1,6 @@
 package basicFrame;
 
-import sortings.BubbleSort;
+import sortings.BubbleSortListOfListAuxiliary;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -16,7 +16,7 @@ import java.util.Collections;
 /**
  * Created by WORK on 12.10.2016.
  */
-public class BasicFrameAuxiliary extends JFrame implements ActionListener {
+public class BasicFrameListOfListAuxiliary extends JFrame implements ActionListener {
 
     //    private Timer timer;
     private GridBagConstraints gridBag = new GridBagConstraints();
@@ -51,7 +51,7 @@ public class BasicFrameAuxiliary extends JFrame implements ActionListener {
 
     }
 
-    public BasicFrameAuxiliary() {
+    public BasicFrameListOfListAuxiliary() {
 
 //        getContentPane().setLayout(new GridBagLayout());
 
@@ -120,16 +120,23 @@ public class BasicFrameAuxiliary extends JFrame implements ActionListener {
         return randomList;
     }
 
-    BubbleSort bubbleSort = new BubbleSort();
+    {
+        randomList = getRandomList(count);
+    }
 
-
+    BubbleSortListOfListAuxiliary bubbleSort = new BubbleSortListOfListAuxiliary();
 
 
     private class RandRect extends JComponent {
 
-        {randomList = getRandomList(count);
-            bubbleSort.k = count - 1;}
+        {
+            randomList = getRandomList(count);
+            bubbleSort.k = count - 1;
+        }
 
+        //        private ArrayList<ArrayList<Integer>> getSortedList(ArrayList<Integer> randomList) {
+//            for (int i = 0; i )
+//        }
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
@@ -147,7 +154,9 @@ public class BasicFrameAuxiliary extends JFrame implements ActionListener {
             coefficient = (int) ((yShift) / count);
 
 //            sortingList = new RandomGenerator().getRandomList(count);
-            sortingList = bubbleSort.sort(randomList);
+            ArrayList<ArrayList<Integer>> sortedList = bubbleSort.getSortedList(randomList);
+////            sortingList = bubbleSort.sort(randomList);
+            sortingList = sortedList.get(bubbleSort.k - 1);
 
             for (int i = 0; i < count; i++) {
 //                if (bubbleSort.k !=0 && bubbleSort.k % 5 != 0)
@@ -228,7 +237,7 @@ public class BasicFrameAuxiliary extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new BasicFrameAuxiliary().addComponentsToPane());
+        SwingUtilities.invokeLater(() -> new BasicFrameListOfListAuxiliary().addComponentsToPane());
 //        getRandomList(20);
     }
 }
