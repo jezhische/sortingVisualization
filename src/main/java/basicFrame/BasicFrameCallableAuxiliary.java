@@ -14,20 +14,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.concurrent.Callable;
+
 
 /**
  * Created by WORK on 12.10.2016.
  */
 public class BasicFrameCallableAuxiliary extends JFrame implements ActionListener {
+
     //    private Timer upperTimer;
     private GridBagConstraints gridBag = new GridBagConstraints();
     private JButton start;
     private JButton reset;
     private JSlider rectNumberSlider;
     private JSlider delaySlider;
-    private BasicFrameCallableAuxiliary.UpperRandRect upperVisualPane;
-    private BasicFrameCallableAuxiliary.LowerRandRect lowerVisualPane;
+    private UpperRandRect upperVisualPane;
+    private LowerRandRect lowerVisualPane;
     private int frameWidth;
     private int frameHeight;
     private int yShift;
@@ -58,33 +59,11 @@ public class BasicFrameCallableAuxiliary extends JFrame implements ActionListene
         reset = new JButton("Reset");
         reset.addActionListener(this);
 
-        rectNumberSlider = new JSlider(JSlider.HORIZONTAL, 10, yShift + 100, 70);
-        rectNumberSlider.setMajorTickSpacing(20);
-        rectNumberSlider.setMinorTickSpacing(5);
-        rectNumberSlider.setPaintTicks(true);
-        rectNumberSlider.setPaintLabels(true);
-        rectNumberSlider.setSnapToTicks(true);
-        rectNumberSlider.setBorder(new TitledBorder("number of items to be sorted (press \"Reset\" after setting)"));
+        addJSliders();
 
-        delaySlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 30);
-        delaySlider.setMajorTickSpacing(5);
-        delaySlider.setMinorTickSpacing(1);
-        delaySlider.setPaintTicks(true);
-        delaySlider.setPaintLabels(true);
-        delaySlider.setSnapToTicks(false);
-        delaySlider.setBorder(new TitledBorder("delay"));
-        delaySlider.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                upperTimer.setDelay(delaySlider.getValue());
-                lowerTimer.setDelay(delaySlider.getValue());
-            }
-        });
-
-        delay = delaySlider.getValue();
         bubbleSort = new BubbleSort();
         randomGenerator = new RandomGenerator();
-//        count = getCount();
+        count = getCount();
         randomList = getRandomList(count);
         randList = getRandList();
 //        count = rectNumberSlider.getValue();
@@ -104,32 +83,58 @@ public class BasicFrameCallableAuxiliary extends JFrame implements ActionListene
         buttons.add(delaySlider);
 
         add(buttons, gridBag);
+        addComponentsToPane();
     }
 
     /**
-     * Метод для создания динамических (обновляющихся) элементов окна. Не может быть вынесен в конструктор,
-     * так как в конструкторе элементы создаются один раз при создании образца класса и не могут обновляться.
-     * Вся статика (главная панель, кнопки и шкалы), напротив, вынесена в конструктор
+     * Метод для создания динамических (обновляющихся) элементов окна. В принципе, можно было оставить его
+     * в конструкторе, но конструктор оказывался слишком массивным.
      */
-    public void addComponentsToPane() {
+    private void addComponentsToPane() {
 
-        upperVisualPane = new BasicFrameCallableAuxiliary.UpperRandRect(bubbleSort);
+        upperVisualPane = new UpperRandRect(bubbleSort);
         gridBag.fill = GridBagConstraints.HORIZONTAL;
-        gridBag.gridx = 0;
-        gridBag.gridy = 0;
-        gridBag.ipady = yShift;
-        gridBag.weightx = 1;
-        gridBag.weighty = 1;
-        getContentPane().add(upperVisualPane, gridBag);
-
-        lowerVisualPane = new BasicFrameCallableAuxiliary.LowerRandRect(randomGenerator);
-//        gridBag.fill = GridBagConstraints.HORIZONTAL;
         gridBag.gridx = 0;
         gridBag.gridy = 1;
         gridBag.ipady = yShift;
         gridBag.weightx = 1;
         gridBag.weighty = 1;
+        getContentPane().add(upperVisualPane, gridBag);
+
+        lowerVisualPane = new LowerRandRect(randomGenerator);
+//        gridBag.fill = GridBagConstraints.HORIZONTAL;
+        gridBag.gridx = 0;
+        gridBag.gridy = 3;
+        gridBag.ipady = yShift;
+        gridBag.weightx = 1;
+        gridBag.weighty = 1;
         getContentPane().add(lowerVisualPane, gridBag);
+    }
+
+    /** Метод для создания ползунков, вынесен из конструктора/, чтобы его не перегружатью */
+    private void addJSliders() {
+        rectNumberSlider = new JSlider(JSlider.HORIZONTAL, 10, yShift + 100, 70);
+        rectNumberSlider.setMajorTickSpacing(20);
+        rectNumberSlider.setMinorTickSpacing(5);
+        rectNumberSlider.setPaintTicks(true);
+        rectNumberSlider.setPaintLabels(true);
+        rectNumberSlider.setSnapToTicks(true);
+        rectNumberSlider.setBorder(new TitledBorder("number of items to be sorted (press \"Reset\" after setting)"));
+
+        delaySlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
+        delaySlider.setMajorTickSpacing(5);
+        delaySlider.setMinorTickSpacing(1);
+        delaySlider.setPaintTicks(true);
+        delaySlider.setPaintLabels(true);
+        delaySlider.setSnapToTicks(false);
+        delaySlider.setBorder(new TitledBorder("delay"));
+        delaySlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                upperTimer.setDelay(delaySlider.getValue());
+                lowerTimer.setDelay(delaySlider.getValue());
+            }
+        });
     }
 
     private ArrayList<Integer> getRandomList(int count) {
@@ -366,9 +371,11 @@ public class BasicFrameCallableAuxiliary extends JFrame implements ActionListene
 //            upperVisualPane = new UpperRandRect(bubbleSort);
             iterationCounter = 0;
             bubbleSort.j = 0;
-//            randomGenerator.j = 0;
+            randomGenerator.j = 0;
             bubbleSort.transit = 0;
+            randomGenerator.transit = 0;
             bubbleSort.k = count - 1;
+            randomGenerator.k = count - 1;
             start.setText("Start");
             upperVisualPane.repaint();
             lowerVisualPane.repaint();
@@ -376,7 +383,7 @@ public class BasicFrameCallableAuxiliary extends JFrame implements ActionListene
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new BasicFrameCallableAuxiliary().addComponentsToPane());
+        SwingUtilities.invokeLater(() -> new BasicFrameCallableAuxiliary());
 //        getRandomList(20);
     }
 }

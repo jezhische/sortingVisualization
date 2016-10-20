@@ -82,6 +82,7 @@ public class BasicFrameListOfListAuxiliary extends JFrame implements ActionListe
         delaySlider.setPaintTicks(true);
         delaySlider.setPaintLabels(true);
         delaySlider.setSnapToTicks(true);
+
         delaySlider.setBorder(new TitledBorder("delay"));
         delaySlider.addChangeListener(new ChangeListener() {
             @Override
