@@ -19,7 +19,7 @@ import java.util.Collections;
 /**
  * Created by WORK on 12.10.2016.
  */
-public class BasicFrameWithClockGenerator extends JFrame implements ActionListener {
+public class BasicFrameWithClockG2 extends JFrame implements ActionListener {
 
     //    private Timer upperTimer;
     private GridBagConstraints gridBag = new GridBagConstraints();
@@ -44,7 +44,7 @@ public class BasicFrameWithClockGenerator extends JFrame implements ActionListen
 
 
     // конструктор класса
-    public BasicFrameWithClockGenerator() {
+    public BasicFrameWithClockG2() {
 
         frameWidth = 1300;
         frameHeight = 750;
@@ -173,7 +173,7 @@ public class BasicFrameWithClockGenerator extends JFrame implements ActionListen
             this.sorter = sorter;
             sorter.k = count - 1;
         }
-        private synchronized ParentSorter getSorter() {
+        private ParentSorter getSorter() {
             return sorter;
         }
 
@@ -344,19 +344,32 @@ public class BasicFrameWithClockGenerator extends JFrame implements ActionListen
         }
     }
 
-    private Timer clockGenerator = new Timer(20, new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-//            upperTimer.stop();
-            upperVisualPane.repaint();
-//            upperTimer.start();
-        }
-    });
+//    private Timer clockGenerator = new Timer(20, new ActionListener() {
+//        @Override
+//        public void actionPerformed(ActionEvent e) {
+////            upperTimer.stop();
+//            upperVisualPane.repaint();
+////            upperTimer.start();
+//        }
+//    });
 
+    private volatile int iterCounter = 0;
     private Timer upperTimer = new Timer(delay, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            if (delay !=0 && (int)(iterCounter * delay  % 20.0) == 0 ) {
+                upperVisualPane.repaint();
+                upperVisualPane.getSorter().sort(randList);
+                iterCounter++;
+            } else if (delay == 0) {
+                upperVisualPane.getSorter().sort(randList);
+                upperVisualPane.repaint();
+                iterCounter++;
+            } else {
             upperVisualPane.getSorter().sort(randList);
+//            upperVisualPane.repaint();
+            iterCounter++;
+            }
 //            upperVisualPane.revalidate();
 //            upperVisualPane.repaint();
         }
@@ -372,18 +385,15 @@ public class BasicFrameWithClockGenerator extends JFrame implements ActionListen
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Start")) {
-            clockGenerator.start();
             upperTimer.start();
 //            lowerTimer.start();
             start.setText("Pause");
         } else if (e.getActionCommand().equals("Pause")) {
-            clockGenerator.stop();
             upperTimer.stop();
 //            upperVisualPane.repaint();
 //            lowerTimer.stop();
             start.setText("Start");
         } else if (e.getActionCommand().equals("Reset")) {
-            clockGenerator.stop();
             upperTimer.stop();
 //            lowerTimer.stop();
             rX = 0;
@@ -392,6 +402,7 @@ public class BasicFrameWithClockGenerator extends JFrame implements ActionListen
             randList = getRandList();
 //            upperVisualPane = new UpperRandRect(bubbleSort);
             iterationCounter = 0;
+            iterCounter = 0;
             bubbleSort.j = 0;
             randomGenerator.j = 0;
             bubbleSort.transit = 0;
@@ -405,7 +416,7 @@ public class BasicFrameWithClockGenerator extends JFrame implements ActionListen
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new BasicFrameWithClockGenerator());
+        SwingUtilities.invokeLater(() -> new BasicFrameWithClockG2());
 //        getRandomList(20);
     }
 }
