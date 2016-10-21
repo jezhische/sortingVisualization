@@ -206,6 +206,7 @@ public class BasicFrameWithClockG3 extends JFrame implements ActionListener {
 
             /** sortingList - это список, который меняется после каждой сортировки */
 //            ArrayList<Integer> sortingList = sorter.sort(randList);
+            sortableList = randList;
             for (int i = 0; i < count; i++) {
                 rHeight = -(int) ((sortableList.get(i) * coefficient) / 2);
                 rX = i * rWidth;
@@ -429,9 +430,9 @@ public class BasicFrameWithClockG3 extends JFrame implements ActionListener {
             randomList = getRandomList(count);
             randList = getRandList();
 
-            upperVisualPane = new UpperRandRect(bubbleSort, randList);
-            lowerVisualPane = new LowerRandRect(randomGenerator);
-
+//            upperVisualPane = new UpperRandRect(bubbleSort, randList);
+//            lowerVisualPane = new LowerRandRect(randomGenerator);
+            addComponentsToPane();
             iterationCounter = 0;
             upperIterationCounter = 0;
             lowerIterationCounter = 0;
