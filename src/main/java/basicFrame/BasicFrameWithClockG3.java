@@ -428,7 +428,10 @@ public class BasicFrameWithClockG3 extends JFrame implements ActionListener {
             count = rectNumberSlider.getValue();
             randomList = getRandomList(count);
             randList = getRandList();
-//            upperVisualPane = new UpperRandRect(bubbleSort);
+
+            upperVisualPane = new UpperRandRect(bubbleSort, randList);
+            lowerVisualPane = new LowerRandRect(randomGenerator);
+
             iterationCounter = 0;
             upperIterationCounter = 0;
             lowerIterationCounter = 0;
