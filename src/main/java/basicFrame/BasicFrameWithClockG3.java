@@ -19,7 +19,7 @@ import java.util.Collections;
 /**
  * Created by WORK on 12.10.2016.
  */
-public class BasicFrameWithClockG2 extends JFrame implements ActionListener {
+public class BasicFrameWithClockG3 extends JFrame implements ActionListener {
 
     //    private Timer upperTimer;
     private GridBagConstraints gridBag = new GridBagConstraints();
@@ -46,7 +46,7 @@ public class BasicFrameWithClockG2 extends JFrame implements ActionListener {
 
 
     // конструктор класса
-    public BasicFrameWithClockG2() {
+    public BasicFrameWithClockG3() {
 
         frameWidth = 1300;
         frameHeight = 750;
@@ -94,7 +94,7 @@ public class BasicFrameWithClockG2 extends JFrame implements ActionListener {
      */
     private void addComponentsToPane() {
 
-        upperVisualPane = new UpperRandRect(bubbleSort);
+        upperVisualPane = new UpperRandRect(bubbleSort, randList);
         gridBag.fill = GridBagConstraints.HORIZONTAL;
         gridBag.gridx = 0;
         gridBag.gridy = 1;
@@ -178,8 +178,11 @@ public class BasicFrameWithClockG2 extends JFrame implements ActionListener {
     private class UpperRandRect extends JComponent {
         ParentSorter sorter;
 
-        UpperRandRect(ParentSorter sorter) {
+        ArrayList<Integer> sortableList = new ArrayList<>();
+
+        UpperRandRect(ParentSorter sorter, ArrayList<Integer> sortableList) {
             this.sorter = sorter;
+            this.sortableList = sortableList;
             sorter.k = count - 1;
         }
 //        private ParentSorter getSorter() {
@@ -204,7 +207,7 @@ public class BasicFrameWithClockG2 extends JFrame implements ActionListener {
             /** sortingList - это список, который меняется после каждой сортировки */
 //            ArrayList<Integer> sortingList = sorter.sort(randList);
             for (int i = 0; i < count; i++) {
-                rHeight = -(int) ((randList.get(i) * coefficient) / 2);
+                rHeight = -(int) ((sortableList.get(i) * coefficient) / 2);
                 rX = i * rWidth;
                 g2d.setColor(Color.BLUE);
                 g2d.drawRect(rX, yShift, rWidth, rHeight - 4);
@@ -221,7 +224,7 @@ public class BasicFrameWithClockG2 extends JFrame implements ActionListener {
                 }
                 if (sorter.k == 0) {
                     for (int n = 0; n < count; n++) {
-                        rHeight = -(int) ((randList.get(n) * coefficient) / 2);
+                        rHeight = -(int) ((sortableList.get(n) * coefficient) / 2);
                         rX = n * rWidth;
                         g2d.setColor(Color.GREEN);
                         g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
@@ -230,9 +233,9 @@ public class BasicFrameWithClockG2 extends JFrame implements ActionListener {
                         Font f = new Font("Dialog", Font.BOLD, fontSize);
                         g2d.setFont(f);
                         FontMetrics fontMetrics = g2d.getFontMetrics();
-                        int stringXCoordinate = rX + rWidth / 2 - fontMetrics.stringWidth(String.valueOf(randList.get(n))) / 2;
+                        int stringXCoordinate = rX + rWidth / 2 - fontMetrics.stringWidth(String.valueOf(sortableList.get(n))) / 2;
                         int stringYCoordinate = yShift - (int) (fontMetrics.getHeight() + 10);
-                        g2d.drawString(String.valueOf(randList.get(n)), stringXCoordinate, stringYCoordinate);
+                        g2d.drawString(String.valueOf(sortableList.get(n)), stringXCoordinate, stringYCoordinate);
                     }
                     upperTimer.stop();
                 }
@@ -242,9 +245,9 @@ public class BasicFrameWithClockG2 extends JFrame implements ActionListener {
                 Font f = new Font("Dialog", Font.BOLD, fontSize);
                 g2d.setFont(f);
                 FontMetrics fontMetrics = g2d.getFontMetrics();
-                int stringXCoordinate = rX + rWidth / 2 - fontMetrics.stringWidth(String.valueOf(randList.get(i))) / 2;
+                int stringXCoordinate = rX + rWidth / 2 - fontMetrics.stringWidth(String.valueOf(sortableList.get(i))) / 2;
                 int stringYCoordinate = yShift - (int) (fontMetrics.getHeight() + 10);
-                g2d.drawString(String.valueOf(randList.get(i)), stringXCoordinate, stringYCoordinate);
+                g2d.drawString(String.valueOf(sortableList.get(i)), stringXCoordinate, stringYCoordinate);
             }
 
             int dataFontSize = (int) (frameWidth / 80);
@@ -442,7 +445,7 @@ public class BasicFrameWithClockG2 extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new BasicFrameWithClockG2());
+        SwingUtilities.invokeLater(() -> new BasicFrameWithClockG3());
 //        getRandomList(20);
     }
 }
