@@ -202,7 +202,7 @@ public class BasicFrameWithClockG2 extends JFrame implements ActionListener {
             coefficient = (int) (2 * (yShift) / count);
 
             /** sortingList - это список, который меняется после каждой сортировки */
-//            ArrayList<Integer> sortingList = sorter.sort(randList);
+//            ArrayList<Integer> sortingList = sorter.qSort(randList);
             for (int i = 0; i < count; i++) {
                 rHeight = -(int) ((randList.get(i) * coefficient) / 2);
                 rX = i * rWidth;
@@ -291,7 +291,7 @@ public class BasicFrameWithClockG2 extends JFrame implements ActionListener {
             coefficient = (int) (2 * (yShift) / count);
 
 //            /** sortingList - это список, который меняется после каждой сортировки */
-//            ArrayList<Integer> sortingList = sorter.sort(randomList);
+//            ArrayList<Integer> sortingList = sorter.qSort(randomList);
             for (int i = 0; i < count; i++) {
                 rHeight = -(int) ((randomList.get(i) * coefficient) / 2);
                 rX = i * rWidth;

@@ -193,7 +193,7 @@ public class BasicFrameWithClockGenerator extends JFrame implements ActionListen
             coefficient = (int)(2 * (yShift) / count);
 
             /** sortingList - это список, который меняется после каждой сортировки */
-//            ArrayList<Integer> sortingList = sorter.sort(randList);
+//            ArrayList<Integer> sortingList = sorter.qSort(randList);
             for (int i = 0; i < count; i++) {
                 rHeight = -(int) ((randList.get(i) * coefficient) / 2);
                 rX = i * rWidth;

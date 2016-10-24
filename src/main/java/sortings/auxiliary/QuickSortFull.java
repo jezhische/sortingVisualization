@@ -4,31 +4,43 @@ import sortings.ParentSorter;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
+import java.util.List;
 
 /**
  * Created by Ежище on 23.10.2016.
  */
 public class QuickSortFull extends ParentSorter {
     int count; // размер списка randomList.size()
-    int pivot = new Random().nextInt(count); // это всегда будет число в диапазоне от 0 до count - 1, т.е. годится как
-    // индекс случайного элемента списка
+//    int pivot = new Random().nextInt(count); // это всегда будет число в диапазоне от 0 до (count - 1), т.е. годится как
+//    // индекс случайного элемента списка
 
-    public ArrayList<Integer> sort(ArrayList<Integer> randomList) {
+    public List<Integer> qSort(List<Integer> randomList) {
         int pivotAtSortedPosition;
+        int left = 0;
+        int right = count - 1;
         // j = 0 согласно инициализации в родительском классе ParentSorter
-        k = randomList.size() - 1; // другими словами, k = count - 1;
-        int x = randomList.get(pivot);
-        while (j < k) {
-            while (randomList.get(j) < x) // находим элемент слева от x, который больше, чем x, и, соответственно,
-                // должен находиться справа от него
-                j++;
-            while (randomList.get(k) > x) // находим элемент справа от x, который меньше, чем x, и, соответственно,
-                // должен находиться слева от него
-                k--;
-            if (j <= k) //и если элемент, больший чем x, находится слева от x, а элемент, меньший чем x, находится справа
-                Collections.swap(randomList, j, k); // то меняем их местами
+//        k = randomList.size() - 1; // другими словами, k = count - 1;
+//        int x = randomList.get(pivot);
+        int x = randomList.get(left + (right - left) / 2);
+        while (left < right) {
+            while (randomList.get(left) < x) // находим элемент слева от x, который больше, чем x, и, соответственно,
+                // должен находиться справа от него - нашли и остановились, поскольку перестало выполняться
+                // условие (randomList.get(j) < x)
+                left++;
+            while (randomList.get(right) > x) // находим элемент справа от x, который меньше, чем x, и, соответственно,
+                // должен находиться слева от него - нашли и остановились
+                right--;
+//            if (j < k) //и если элемент, больший чем x, находится слева от x, а элемент, меньший чем x, находится справа
+                Collections.swap(randomList, left, right); // то меняем их местами
+            // и если j < k, то продолжаем выполнять цикл, пока не случится j = k
         }
+        System.out.println("x = " + x);
+
+        if (x > 0)
+            qSort(randomList.subList(0, x - 1));
+        if (x < randomList.size())
+            qSort(randomList.subList(x, randomList.size()));
+
 //        // pivot равен j-му элементу (изначально левому 0-му):
 //        while (j < k)
 //            if (randomList.get(j) > randomList.get(k)) {
@@ -42,33 +54,33 @@ public class QuickSortFull extends ParentSorter {
 //        if (k == j) {
 //            j++;
 //            k = randomList.size() - 1;
-//            sort(randomList);
+//            qSort(randomList);
 //        }
         return randomList;
     }
 
-    private ArrayList<Integer> getRandomList() {
-        ArrayList<Integer> randomList = new ArrayList<>();
+    private List<Integer> getRandomList() {
+        ArrayList<Integer> randomList = new ArrayList<>(count);
         for (int i = 0; i < count; i++)
             randomList.add(i);
         Collections.shuffle(randomList);
-        return randomList;
+        return (List<Integer>) randomList;
     }
 
     private void printList(int count) {
         this.count = count;
-        ArrayList<Integer> randomList = getRandomList();
+        List<Integer> randomList = getRandomList();
         System.out.print("randomList = " + randomList);
-        System.out.printf("  j = %d, k = %d", j, count - 1);
+//        System.out.printf("  j = %d, k = %d", j, count - 1);
         System.out.println("");
-        sort(randomList);
+        qSort(randomList);
         System.out.print("randomList = " + randomList);
-        System.out.printf("  j = %d, k = %d", j, k);
-        sort(randomList);
+//        System.out.printf("  j = %d, k = %d", j, k);
+        qSort(randomList);
     }
 
     public static void main(String[] args) {
-        new QuickSortFull().printList(5);
+        new QuickSortFull().printList(9);
 //        System.out.println(new Random().nextInt(5));
     }
 }

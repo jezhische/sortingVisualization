@@ -153,7 +153,7 @@ public class BasicFrameUtilTimerAuxiliary extends JFrame implements ActionListen
 
             for (int i = 0; i < count; i++) {
 //                if (bubbleSort.k !=0 && bubbleSort.k % 5 != 0)
-//                    sortingList = bubbleSort.sort(randomList);
+//                    sortingList = bubbleSort.qSort(randomList);
                 rHeight = -((sortingList.get(i) * coefficient));
                 rX = i * rWidth;
                 g2d.setColor(Color.BLUE);
@@ -194,7 +194,7 @@ public class BasicFrameUtilTimerAuxiliary extends JFrame implements ActionListen
                 int stringXCoordinate = rX + rWidth / 2 - fontMetrics.stringWidth(String.valueOf(sortingList.get(i))) / 2;
                 int stringYCoordinate = yShift - (int) (fontMetrics.getHeight() + 10);
                 g2d.drawString(String.valueOf(sortingList.get(i)), stringXCoordinate, stringYCoordinate);
-//                sortingList = bubbleSort.sort();
+//                sortingList = bubbleSort.qSort();
             }
         }
     }
