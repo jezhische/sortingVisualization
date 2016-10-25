@@ -22,7 +22,7 @@ public class QuickSortFull extends ParentSorter {
 //        k = randomList.size() - 1; // другими словами, k = count - 1;
 //        int x = randomList.get(pivot);
         int x = randomList.get(left + (right - left) / 2);
-        while (left < right) {
+        while (left <= right) {
             while (randomList.get(left) < x) // находим элемент слева от x, который больше, чем x, и, соответственно,
                 // должен находиться справа от него - нашли и остановились, поскольку перестало выполняться
                 // условие (randomList.get(j) < x)
@@ -30,9 +30,12 @@ public class QuickSortFull extends ParentSorter {
             while (randomList.get(right) > x) // находим элемент справа от x, который меньше, чем x, и, соответственно,
                 // должен находиться слева от него - нашли и остановились
                 right--;
-//            if (j < k) //и если элемент, больший чем x, находится слева от x, а элемент, меньший чем x, находится справа
+            if (j <= k) { //и если элемент, больший чем x, находится слева от x, а элемент, меньший чем x, находится справа
                 Collections.swap(randomList, left, right); // то меняем их местами
             // и если j < k, то продолжаем выполнять цикл, пока не случится j = k
+                left++;
+                right--;
+            }
         }
         System.out.println("x = " + x);
 
