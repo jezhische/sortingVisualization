@@ -2,6 +2,7 @@ package basicFrame;
 
 import sortings.BubbleSort;
 import sortings.ParentSorter;
+import sortings.QuickSort;
 import sortings.RandomGenerator;
 
 import javax.swing.*;
@@ -19,7 +20,7 @@ import java.util.Collections;
 /**
  * Created by WORK on 12.10.2016.
  */
-public class BasicFrameWithClockG2 extends JFrame implements ActionListener {
+public class BasicFrameWithClockG2_2 extends JFrame implements ActionListener {
 
     //    private Timer upperTimer;
     private GridBagConstraints gridBag = new GridBagConstraints();
@@ -40,13 +41,14 @@ public class BasicFrameWithClockG2 extends JFrame implements ActionListener {
     private int delay;
     private BubbleSort bubbleSort;
     private RandomGenerator randomGenerator;
+    private QuickSort quickSort;
     private int upperIterationCounter;
     private int lowerIterationCounter;
     private int iterationCounter;
 
 
     // конструктор класса
-    public BasicFrameWithClockG2() {
+    public BasicFrameWithClockG2_2() {
 
         frameWidth = 1300;
         frameHeight = 750;
@@ -65,6 +67,7 @@ public class BasicFrameWithClockG2 extends JFrame implements ActionListener {
 
         bubbleSort = new BubbleSort();
         randomGenerator = new RandomGenerator();
+        quickSort = new QuickSort();
         count = getCount();
         randomList = getRandomList(count);
         randList = getRandList();
@@ -103,7 +106,7 @@ public class BasicFrameWithClockG2 extends JFrame implements ActionListener {
         gridBag.weighty = 1;
         getContentPane().add(upperVisualPane, gridBag);
 
-        lowerVisualPane = new LowerRandRect(randomGenerator);
+        lowerVisualPane = new LowerRandRect(quickSort);
 //        gridBag.fill = GridBagConstraints.HORIZONTAL;
         gridBag.gridx = 0;
         gridBag.gridy = 3;
@@ -181,6 +184,7 @@ public class BasicFrameWithClockG2 extends JFrame implements ActionListener {
         UpperRandRect(ParentSorter sorter) {
             this.sorter = sorter;
             sorter.k = count - 1;
+//            sorter.j = 0;
         }
 //        private ParentSorter getSorter() {
 //            return sorter;
@@ -269,16 +273,19 @@ public class BasicFrameWithClockG2 extends JFrame implements ActionListener {
      */
     private class LowerRandRect extends JComponent {
         ParentSorter sorter;
+//        QuickSort sorter = new QuickSort();
 
         LowerRandRect(ParentSorter sorter) {
             this.sorter = sorter;
-            sorter.k = count - 1;
+            sorter.kkk = count - 1;
         }
 
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
+
+//            System.out.println("kkk = " + sorter.kkk);
 
             g2d.setBackground(Color.PINK);
             frameWidth = this.getWidth();
@@ -292,6 +299,7 @@ public class BasicFrameWithClockG2 extends JFrame implements ActionListener {
 
 //            /** sortingList - это список, который меняется после каждой сортировки */
 //            ArrayList<Integer> sortingList = sorter.qSort(randomList);
+//            randomList = sorter.sort(randomList);
             for (int i = 0; i < count; i++) {
                 rHeight = -(int) ((randomList.get(i) * coefficient) / 2);
                 rX = i * rWidth;
@@ -300,15 +308,15 @@ public class BasicFrameWithClockG2 extends JFrame implements ActionListener {
                 g2d.setColor(Color.YELLOW);
                 g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
 
-                if (i == sorter.j) {
+                if (i == sorter.jjj) {
                     g2d.setColor(Color.RED);
                     g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
                 }
-                if (i == sorter.k) {
+                if (i == sorter.kkk) {
                     g2d.setColor(Color.GREEN);
                     g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
                 }
-                if (sorter.k == 0) {
+                if (sorter.kkk == 0) {
                     for (int n = 0; n < count; n++) {
                         rHeight = -(int) ((randomList.get(n) * coefficient) / 2);
                         rX = n * rWidth;
@@ -345,12 +353,11 @@ public class BasicFrameWithClockG2 extends JFrame implements ActionListener {
             g2d.drawString("series " + String.valueOf(count) + "items", frameWidth / 80,
                     frameHeight / 10 + frameWidth / 80 + 5);
             g2d.setColor(Color.RED);
-            if (sorter.k == 0)
+            if (sorter.kkk == 0)
                 iterationCounter--;
             g2d.drawString("iteration number " + String.valueOf(iterationCounter / 2), frameWidth / 80,
                     frameHeight / 10 + 2 * frameWidth / 80 + 5);
             iterationCounter++;
-
         }
     }
 
@@ -404,6 +411,8 @@ public class BasicFrameWithClockG2 extends JFrame implements ActionListener {
                 lowerVisualPane.repaint();
                 lowerIterationCounter++;
             }
+//            lowerVisualPane.sorter.sort(randomList);
+//            lowerVisualPane.repaint();
         }
     });
 
@@ -430,11 +439,11 @@ public class BasicFrameWithClockG2 extends JFrame implements ActionListener {
             upperIterationCounter = 0;
             lowerIterationCounter = 0;
             upperVisualPane.sorter.j = 0;
-            lowerVisualPane.sorter.j = 0;
+            lowerVisualPane.sorter.jjj = 0;
 //            bubbleSort.transit = 0;
 //            randomGenerator.transit = 0;
             upperVisualPane.sorter.k = count - 1;
-            lowerVisualPane.sorter.k = count - 1;
+            lowerVisualPane.sorter.kkk = count - 1;
             start.setText("Start");
             upperVisualPane.repaint();
             lowerVisualPane.repaint();
@@ -442,7 +451,7 @@ public class BasicFrameWithClockG2 extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new BasicFrameWithClockG2());
+        SwingUtilities.invokeLater(() -> new BasicFrameWithClockG2_2());
 //        getRandomList(20);
     }
 }

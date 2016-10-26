@@ -12,7 +12,7 @@ import java.util.Collections;
 public class QuickSortListFull extends ParentSorter {
     private int count;
 
-    private void quickSort(ArrayList<Integer> randomList, int left, int right) {
+    public void quickSort(ArrayList<Integer> randomList, int left, int right) {
         int leftIndex, rightIndex;
         leftIndex = left;
         rightIndex = right;
@@ -40,6 +40,7 @@ public class QuickSortListFull extends ParentSorter {
             quickSort(randomList, left, leftIndex - 1);
         if (leftIndex < right) // условие определения правого subarray
             quickSort(randomList, leftIndex, right);
+//        quickSort(randomList, rightIndex + 1, right); // - можно и так
     }
 
     private ArrayList<Integer> getRandomList() {

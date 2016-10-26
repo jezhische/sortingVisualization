@@ -8,7 +8,7 @@ import java.util.List;
  */
 public abstract class ParentSorter {
     /** индекс элемента, который при данной прорисовке сравнивается со следующим в списке (индекс пузырька) */
-    public int j = 0;
+    public int j; // = 0 по умолчанию
     /** индекс элемента, до которого движется пузырек (справа от него все элементы уже отсортированы);
      * при k = count - 1 это индекс конца списка */
     public int k;
@@ -17,4 +17,8 @@ public abstract class ParentSorter {
 //    public int count;
     public ArrayList<Integer> sort(ArrayList<Integer> randomList){return randomList;}
     public List<Integer> sort(List<Integer> randomList){return randomList;}
+    public void quickSort(ArrayList<Integer> randomList, int left, int right) {}
+    public int kkk;
+    public int jjj = 0;
+    public int leftIndex, rightIndex;
 }
