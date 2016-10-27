@@ -20,5 +20,8 @@ public abstract class ParentSorter {
     public void quickSort(ArrayList<Integer> randomList, int left, int right) {}
     public int kkk;
     public int jjj = 0;
-    public int leftIndex, rightIndex;
+    public int leftIndex, rightIndex, left, right;
+    {leftIndex = 0;
+    rightIndex = 24;}
+    public int pivot;
 }

@@ -316,6 +316,12 @@ public class BasicFrameWithClockG2_2 extends JFrame implements ActionListener {
                     g2d.setColor(Color.GREEN);
                     g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
                 }
+
+                if (i == sorter.pivot) {
+                    g2d.setColor(Color.CYAN);
+                    g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
+                }
+
                 if (sorter.kkk == 0) {
                     for (int n = 0; n < count; n++) {
                         rHeight = -(int) ((randomList.get(n) * coefficient) / 2);
