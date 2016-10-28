@@ -13,19 +13,21 @@ public class QuickSortListFullWithoutIntPar extends ParentSorter {
     private int count;
     ArrayList<Integer> randomList = new ArrayList<>();
 
-    QuickSortListFullWithoutIntPar(ArrayList<Integer> randomList) {
+    public QuickSortListFullWithoutIntPar(ArrayList<Integer> randomList) {
         this.randomList = randomList;
         left = 0;
         right = randomList.size() - 1;
     }
 
-    public void quickSort(ArrayList<Integer> randomList) {
+    public void quickSort() {
 //        int leftIndex, rightIndex;
 
-        this.randomList = randomList;
+//        this.randomList = randomList;
         leftIndex = left;
         rightIndex = right;
-        int pivot = randomList.get(left + (right - left) / 2);
+        int pivotIndex = left + (right - left) / 2;
+        int pivot = randomList.get(pivotIndex);
+        System.out.print("pivot index before = " + pivotIndex);
 //        int pivot = randomList.get(new Random().nextInt(randomList.size())); // что интересно, со случайным pivot метод часто
 // //срабатывает с очень явно видной задержкой, работает до count = 29, дальше повисает, а еще дальше выдает стековерфлоу.
         while (leftIndex <= rightIndex) {
@@ -44,17 +46,20 @@ public class QuickSortListFullWithoutIntPar extends ParentSorter {
                 rightIndex--;
             }
         }
+        System.out.println(", pivot index after = " + pivotIndex + ", leftIndex after =" + leftIndex + ", rightIndex after =" + rightIndex);
 
         int temp = right;
         if (left < leftIndex - 1) { // условие определения левого subarray
 //            right = leftIndex - 1;
+            System.out.print("left subarray: ");
             right = rightIndex + 1;
-            quickSort(randomList);
+            quickSort();
         }
         if (leftIndex < right) { // условие определения правого subarray
+            System.out.print("right subarray: ");
             left = leftIndex;
             right = temp;
-            quickSort(randomList);
+            quickSort();
         }
 //        quickSort(randomList, rightIndex + 1, right); // - можно и так
     }
@@ -80,7 +85,7 @@ public class QuickSortListFullWithoutIntPar extends ParentSorter {
     public ArrayList<Integer> sort(ArrayList<Integer> randomList) {
         k = randomList.size() - 1;
 //        k = count - 1;
-        quickSort(randomList);
+        quickSort();
         return randomList;
     }
 
