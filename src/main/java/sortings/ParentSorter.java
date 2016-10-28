@@ -21,7 +21,7 @@ public abstract class ParentSorter {
     public int kkk;
     public int jjj = 0;
     public int leftIndex, rightIndex, left, right;
-    {leftIndex = 0;
-    rightIndex = 24;}
+//    {leftIndex = 0;
+//    rightIndex = 24;}
     public int pivot;
 }

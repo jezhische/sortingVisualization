@@ -8,13 +8,22 @@ import java.util.Collections;
  * начиналось все с: https://dev64.wordpress.com/2013/07/24/quick-sort/
  */
 public class QuickSort extends ParentSorter {
+
+    public QuickSort() {
+        randomList = new ArrayList<>();
+        leftIndex = 0;
+        rightIndex = randomList.size() - 1;
+    }
+    ArrayList<Integer> randomList;
+
     public void quickSort(ArrayList<Integer> randomList, int left, int right) {
 //        if (right >= left)
 //            return;
 //        int leftIndex, rightIndex;
-//        leftIndex = left;
-//        rightIndex = right;
-        int pivotIndex = leftIndex + (rightIndex - leftIndex) / 2;
+        leftIndex = left;
+        rightIndex = right;
+//        int pivotIndex = leftIndex + (rightIndex - leftIndex) / 2;
+        int pivotIndex = left + (right - left) / 2;
         pivot = randomList.get(pivotIndex);
         System.out.println("leftIndex before = " + leftIndex + ", rightIndex before = " + rightIndex +
                 ", pivotIndex before =" + pivotIndex);
@@ -41,10 +50,14 @@ public class QuickSort extends ParentSorter {
                 }
             }
         } else if (leftIndex > rightIndex) {
-            if (left < leftIndex - 1) // условие определения левого subarray
+            if (left < leftIndex - 1) { // условие определения левого subarray
+                right = leftIndex - 1;
                 quickSort(randomList, left, leftIndex - 1);
-            if (leftIndex < right) // условие определения правого subarray
+            }
+            if (leftIndex < right) { // условие определения правого subarray
+                left = leftIndex;
                 quickSort(randomList, leftIndex, right);
+            }
         }
         System.out.println("leftIndex after = " + leftIndex + ", rightIndex after = " + rightIndex +
                 ", pivotIndex after =" + pivotIndex);

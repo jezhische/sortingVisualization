@@ -9,11 +9,20 @@ import java.util.Collections;
  * Created by WORK on 24.10.2016.
  * начиналось все с: https://dev64.wordpress.com/2013/07/24/quick-sort/
  */
-public class QuickSortListFull extends ParentSorter {
-    public int count;
+public class QuickSortListFullWithoutIntPar extends ParentSorter {
+    private int count;
+    ArrayList<Integer> randomList = new ArrayList<>();
 
-    public void quickSort(ArrayList<Integer> randomList, int left, int right) {
-        int leftIndex, rightIndex;
+    QuickSortListFullWithoutIntPar(ArrayList<Integer> randomList) {
+        this.randomList = randomList;
+        left = 0;
+        right = randomList.size() - 1;
+    }
+
+    public void quickSort(ArrayList<Integer> randomList) {
+//        int leftIndex, rightIndex;
+
+        this.randomList = randomList;
         leftIndex = left;
         rightIndex = right;
         int pivot = randomList.get(left + (right - left) / 2);
@@ -36,14 +45,21 @@ public class QuickSortListFull extends ParentSorter {
             }
         }
 
-        if (left < leftIndex - 1) // условие определения левого subarray
-            quickSort(randomList, left, leftIndex - 1);
-        if (leftIndex < right) // условие определения правого subarray
-            quickSort(randomList, leftIndex, right);
+        int temp = right;
+        if (left < leftIndex - 1) { // условие определения левого subarray
+//            right = leftIndex - 1;
+            right = rightIndex + 1;
+            quickSort(randomList);
+        }
+        if (leftIndex < right) { // условие определения правого subarray
+            left = leftIndex;
+            right = temp;
+            quickSort(randomList);
+        }
 //        quickSort(randomList, rightIndex + 1, right); // - можно и так
     }
 
-    public ArrayList<Integer> getRandomList() {
+    private ArrayList<Integer> getRandomList() {
         ArrayList<Integer> randomList = new ArrayList<>(count);
         for (int i = 0; i < count; i++)
             randomList.add(i);
@@ -51,9 +67,9 @@ public class QuickSortListFull extends ParentSorter {
         return randomList;
     }
 
-    private void printList(int count) {
-        this.count = count;
-        ArrayList<Integer> randomList = getRandomList();
+    private void printList() {
+//        this.count = count;
+//        ArrayList<Integer> randomList = getRandomList();
         System.out.print("randomList = " + randomList);
         System.out.println("");
         sort(randomList);
@@ -64,12 +80,15 @@ public class QuickSortListFull extends ParentSorter {
     public ArrayList<Integer> sort(ArrayList<Integer> randomList) {
         k = randomList.size() - 1;
 //        k = count - 1;
-        quickSort(randomList, j, k);
+        quickSort(randomList);
         return randomList;
     }
 
     public static void main(String[] args) {
-        new QuickSortListFull().printList(25);
+        QuickSortListFull qTemp = new QuickSortListFull();
+        qTemp.count = 25;
+        ArrayList<Integer> randomList = qTemp.getRandomList();
+        new QuickSortListFullWithoutIntPar(randomList).printList();
 //        System.out.println(new Random().nextInt(5));
     }
 }
