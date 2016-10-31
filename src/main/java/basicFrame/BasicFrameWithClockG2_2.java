@@ -65,12 +65,12 @@ public class BasicFrameWithClockG2_2 extends JFrame implements ActionListener {
 
         addJSliders();
 
-        bubbleSort = new BubbleSort();
-        randomGenerator = new RandomGenerator();
-        quickSort = new QuickSort();
         count = getCount();
         randomList = getRandomList(count);
         randList = getRandList();
+        bubbleSort = new BubbleSort();
+        randomGenerator = new RandomGenerator();
+        quickSort = new QuickSort(randomList);
 //        count = rectNumberSlider.getValue();
 
         Box buttons = Box.createHorizontalBox();
@@ -308,11 +308,11 @@ public class BasicFrameWithClockG2_2 extends JFrame implements ActionListener {
                 g2d.setColor(Color.YELLOW);
                 g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
 
-                if (i == sorter.jjj) {
+                if (i == sorter.leftIndex) {
                     g2d.setColor(Color.RED);
                     g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
                 }
-                if (i == sorter.kkk) {
+                if (i == sorter.rightIndex) {
                     g2d.setColor(Color.GREEN);
                     g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
                 }

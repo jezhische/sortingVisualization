@@ -11,7 +11,13 @@ import java.util.Collections;
  */
 public class QuickSortListFullWithoutIntPar extends ParentSorter {
     private int count;
+
+    public QuickSortListFullWithoutIntPar(int count) {
+        this.count = count;
+    }
+
     ArrayList<Integer> randomList = new ArrayList<>();
+    private int left, right;
 
     public QuickSortListFullWithoutIntPar(ArrayList<Integer> randomList) {
         this.randomList = randomList;
@@ -20,16 +26,13 @@ public class QuickSortListFullWithoutIntPar extends ParentSorter {
     }
 
     public void quickSort() {
-//        int leftIndex, rightIndex;
+        int leftIndex, rightIndex;
 
 //        this.randomList = randomList;
         leftIndex = left;
         rightIndex = right;
         int pivotIndex = left + (right - left) / 2;
         int pivot = randomList.get(pivotIndex);
-        System.out.print("pivot index before = " + pivotIndex);
-//        int pivot = randomList.get(new Random().nextInt(randomList.size())); // что интересно, со случайным pivot метод часто
-// //срабатывает с очень явно видной задержкой, работает до count = 29, дальше повисает, а еще дальше выдает стековерфлоу.
         while (leftIndex <= rightIndex) {
             while (randomList.get(leftIndex) < pivot)
                 leftIndex++;
@@ -46,7 +49,8 @@ public class QuickSortListFullWithoutIntPar extends ParentSorter {
                 rightIndex--;
             }
         }
-        System.out.println(", pivot index after = " + pivotIndex + ", leftIndex after =" + leftIndex + ", rightIndex after =" + rightIndex);
+        System.out.println(", pivot index = " + pivotIndex + ", pivot = " + pivot + ", leftIndex =" + leftIndex +
+                ", rightIndex =" + rightIndex + ", left = " + left + ", right = " + right);
 
         int temp = right;
         if (left < leftIndex - 1) { // условие определения левого subarray
@@ -55,7 +59,7 @@ public class QuickSortListFullWithoutIntPar extends ParentSorter {
             right = rightIndex + 1;
             quickSort();
         }
-        if (leftIndex < right) { // условие определения правого subarray
+        if (leftIndex < temp) { // условие определения правого subarray
             System.out.print("right subarray: ");
             left = leftIndex;
             right = temp;
@@ -73,27 +77,19 @@ public class QuickSortListFullWithoutIntPar extends ParentSorter {
     }
 
     private void printList() {
-//        this.count = count;
-//        ArrayList<Integer> randomList = getRandomList();
         System.out.print("randomList = " + randomList);
         System.out.println("");
-        sort(randomList);
+        sort();
         System.out.print("randomList = " + randomList);
     }
 
     @Override
-    public ArrayList<Integer> sort(ArrayList<Integer> randomList) {
-        k = randomList.size() - 1;
-//        k = count - 1;
+    public ArrayList<Integer> sort() {
         quickSort();
         return randomList;
     }
 
     public static void main(String[] args) {
-        QuickSortListFull qTemp = new QuickSortListFull();
-        qTemp.count = 25;
-        ArrayList<Integer> randomList = qTemp.getRandomList();
-        new QuickSortListFullWithoutIntPar(randomList).printList();
-//        System.out.println(new Random().nextInt(5));
+        new QuickSortListFullWithoutIntPar(new QuickSortListFullWithoutIntPar(9).getRandomList()).printList();
     }
 }

@@ -17,6 +17,7 @@ public class QuickSortListFull extends ParentSorter {
         leftIndex = left;
         rightIndex = right;
         int pivot = randomList.get(left + (right - left) / 2);
+        int pivotIndex = left + (right - left) / 2;
 //        int pivot = randomList.get(new Random().nextInt(randomList.size())); // что интересно, со случайным pivot метод часто
 // //срабатывает с очень явно видной задержкой, работает до count = 29, дальше повисает, а еще дальше выдает стековерфлоу.
         while (leftIndex <= rightIndex) {
@@ -35,10 +36,12 @@ public class QuickSortListFull extends ParentSorter {
                 rightIndex--;
             }
         }
-
+        System.out.println(", pivot index after = " + pivotIndex + ", leftIndex after =" + leftIndex + ", rightIndex after =" + rightIndex);
         if (left < leftIndex - 1) // условие определения левого subarray
+//            System.out.print("left subarray: ");
             quickSort(randomList, left, leftIndex - 1);
         if (leftIndex < right) // условие определения правого subarray
+//            System.out.print("right subarray: ");
             quickSort(randomList, leftIndex, right);
 //        quickSort(randomList, rightIndex + 1, right); // - можно и так
     }
