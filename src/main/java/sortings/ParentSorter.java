@@ -1,7 +1,6 @@
 package sortings;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Ежище on 16.10.2016.
@@ -31,19 +30,19 @@ public abstract class ParentSorter {
         return randomList;
     }
 
-    public List<Integer> sort(List<Integer> randomList) {
-        return randomList;
-    }
-
-    public void quickSort(ArrayList<Integer> randomList, int left, int right) {
-    }
+//    public List<Integer> sort(List<Integer> randomList) {
+//        return randomList;
+//    }
+//
+//    public void quickSort(ArrayList<Integer> randomList, int left, int right) {
+//    }
 
     public void quickSort() {
 
     }
 
     public int kkk;
-    public int jjj = 0;
+//    public int jjj = 0;
         public int leftIndex, rightIndex, left, right;
 //    public int left, right;
     //    {leftIndex = 0;

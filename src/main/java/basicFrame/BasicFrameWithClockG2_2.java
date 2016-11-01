@@ -68,8 +68,9 @@ public class BasicFrameWithClockG2_2 extends JFrame implements ActionListener {
         count = getCount();
         randomList = getRandomList(count);
         randList = getRandList();
-        bubbleSort = new BubbleSort();
-        randomGenerator = new RandomGenerator();
+        bubbleSort = new BubbleSort(randList); //если использовать пустой конструктор, то без Reset список не
+        // загружается правильно
+        randomGenerator = new RandomGenerator(); // для RandomGenerator все равно, есть ли начальное значение списка
         quickSort = new QuickSort(randomList);
 //        count = rectNumberSlider.getValue();
 
@@ -183,7 +184,7 @@ public class BasicFrameWithClockG2_2 extends JFrame implements ActionListener {
 
         UpperRandRect(ParentSorter sorter) {
             this.sorter = sorter;
-            sorter.k = count - 1;
+//            sorter.k = count - 1;
 //            sorter.j = 0;
         }
 //        private ParentSorter getSorter() {
@@ -202,8 +203,8 @@ public class BasicFrameWithClockG2_2 extends JFrame implements ActionListener {
 
             int rHeight, rWidth;
             int coefficient;
-            rWidth = (int) ((frameWidth - 1) / count);
-            coefficient = (int) (2 * (yShift) / count);
+            rWidth = (frameWidth - 1) / count;
+            coefficient = 2 * (yShift) / count;
 
             /** sortingList - это список, который меняется после каждой сортировки */
 //            ArrayList<Integer> sortingList = sorter.qSort(randList);
@@ -377,21 +378,23 @@ public class BasicFrameWithClockG2_2 extends JFrame implements ActionListener {
             if (upperIterationCounter == 0) {
                 upperVisualPane.repaint();
                 upperIterationCounter++;
-            } else if (getDelay() < 20 && (int) (upperIterationCounter % (20.0 / (getDelay() + 1))) == 0) {
-                // (тактовая частота около 50Гц)
-                upperVisualPane.repaint();
+            } else if (getDelay() == 0) {
+                if ((int) (upperIterationCounter % (60.0 / (getDelay() + 1))) == 0)
+                    upperVisualPane.repaint();
                 upperVisualPane.sorter.sort(randList);
                 upperIterationCounter++;
-            } else if (getDelay() < 20 && (int) (upperIterationCounter % (20.0 / (getDelay() + 1))) != 0) {
+            } else if (getDelay() > 0 && getDelay() < 20) {
+                if ((int) (upperIterationCounter % (20.0 / (getDelay() + 1))) == 0)
+                    upperVisualPane.repaint(); // (тактовая частота около 50Гц)
                 upperVisualPane.sorter.sort(randList);
                 upperIterationCounter++;
-            } else if (getDelay() >= 20) {
+            }
+            else if (getDelay() >= 20) {
                 upperVisualPane.sorter.sort(randList);
                 upperVisualPane.repaint();
                 upperIterationCounter++;
             }
 //            upperVisualPane.revalidate();
-//            upperVisualPane.repaint();
         }
     });
 
@@ -405,20 +408,23 @@ public class BasicFrameWithClockG2_2 extends JFrame implements ActionListener {
             if (lowerIterationCounter == 0) {
                 lowerVisualPane.repaint();
                 lowerIterationCounter++;
-            } else if (delaySlider.getValue() < 20 && (int) (lowerIterationCounter % (20.0 / (delaySlider.getValue() + 1))) == 0) { // частота около 33Гц
-                lowerVisualPane.repaint();
+            } else if (getDelay() == 0) {
+                if ((int) (lowerIterationCounter % (60.0 / (getDelay() + 1))) == 0)
+                    lowerVisualPane.repaint();
                 lowerVisualPane.sorter.sort(randomList);
                 lowerIterationCounter++;
-            } else if (delaySlider.getValue() < 20 && (int) (lowerIterationCounter % (20.0 / (delaySlider.getValue() + 1))) != 0) {
+            } else if (getDelay() > 0 && getDelay() < 20) {
+                if ((int) (lowerIterationCounter % (20.0 / (getDelay() + 1))) == 0)
+                    lowerVisualPane.repaint(); // (тактовая частота около 50Гц)
                 lowerVisualPane.sorter.sort(randomList);
                 lowerIterationCounter++;
-            } else if (delaySlider.getValue() >= 20) {
+            }
+            else if (getDelay() >= 20) {
                 lowerVisualPane.sorter.sort(randomList);
                 lowerVisualPane.repaint();
                 lowerIterationCounter++;
             }
-//            lowerVisualPane.sorter.sort(randomList);
-//            lowerVisualPane.repaint();
+//            lowerVisualPane.revalidate();
         }
     });
 
@@ -436,7 +442,7 @@ public class BasicFrameWithClockG2_2 extends JFrame implements ActionListener {
         } else if (e.getActionCommand().equals("Reset")) {
             upperTimer.stop();
             lowerTimer.stop();
-            rX = 0;
+//            rX = 0;
             count = rectNumberSlider.getValue();
             randomList = getRandomList(count);
             randList = getRandList();
@@ -445,11 +451,13 @@ public class BasicFrameWithClockG2_2 extends JFrame implements ActionListener {
             upperIterationCounter = 0;
             lowerIterationCounter = 0;
             upperVisualPane.sorter.j = 0;
-            lowerVisualPane.sorter.jjj = 0;
+//            lowerVisualPane.sorter.jjj = 0;
 //            bubbleSort.transit = 0;
 //            randomGenerator.transit = 0;
             upperVisualPane.sorter.k = count - 1;
             lowerVisualPane.sorter.kkk = count - 1;
+//            bubbleSort = new BubbleSort(randList);
+//            quickSort = new QuickSort(randomList);
             start.setText("Start");
             upperVisualPane.repaint();
             lowerVisualPane.repaint();

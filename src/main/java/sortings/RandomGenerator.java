@@ -13,7 +13,7 @@ public class RandomGenerator extends ParentSorter {
 //    private int count, yShift, frameWidth, frameHeight, rX;
 //        private ArrayList<Integer> randomList;
 
-//    public ArrayList<Integer> getRandomList(int count) {
+    //    public ArrayList<Integer> getRandomList(int count) {
 //        ArrayList<Integer> randomList = new ArrayList<>(count);
 //        for (int i = 0; i < count; i++) {
 //            randomList.add(i);
@@ -21,6 +21,12 @@ public class RandomGenerator extends ParentSorter {
 //        Collections.shuffle(randomList);
 //        return randomList;
 //    }
+    public RandomGenerator() {
+    }
+
+    public RandomGenerator(ArrayList<Integer> randomList) {
+        this.randomList = randomList;
+    }
 
     @Override
     public ArrayList<Integer> sort(ArrayList<Integer> randomList) {

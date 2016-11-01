@@ -85,7 +85,7 @@ public class QuickSort extends ParentSorter {
 
     @Override
     public ArrayList<Integer> sort(ArrayList<Integer> randomList) {
-        this.randomList = randomList;
+//        this.randomList = randomList;
         quickSort();
         return randomList;
     }
