@@ -278,7 +278,7 @@ public class BasicFrameWithClockG2_2 extends JFrame implements ActionListener {
 
         LowerRandRect(ParentSorter sorter) {
             this.sorter = sorter;
-            sorter.kkk = count - 1;
+//            sorter.kkk = count - 1;
         }
 
         @Override
@@ -318,29 +318,29 @@ public class BasicFrameWithClockG2_2 extends JFrame implements ActionListener {
                     g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
                 }
 
-                if (i == sorter.pivot) {
+                if (i == sorter.pivotIndex) {
                     g2d.setColor(Color.CYAN);
                     g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
                 }
 
-                if (sorter.kkk == 0) {
-                    for (int n = 0; n < count; n++) {
-                        rHeight = -(int) ((randomList.get(n) * coefficient) / 2);
-                        rX = n * rWidth;
-                        g2d.setColor(Color.GREEN);
-                        g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
-                        g2d.setColor(Color.black);
-                        int fontSize = (int) (rWidth / 1.5);
-                        Font f = new Font("Dialog", Font.BOLD, fontSize);
-                        g2d.setFont(f);
-                        FontMetrics fontMetrics = g2d.getFontMetrics();
-                        int stringXCoordinate = rX + rWidth / 2 - fontMetrics.stringWidth
-                                (String.valueOf(randomList.get(n))) / 2;
-                        int stringYCoordinate = yShift - (int) (fontMetrics.getHeight() + 10);
-                        g2d.drawString(String.valueOf(randomList.get(n)), stringXCoordinate, stringYCoordinate);
-                    }
-                    lowerTimer.stop();
-                }
+//                if (sorter.kkk == 0) {
+//                    for (int n = 0; n < count; n++) {
+//                        rHeight = -(int) ((randomList.get(n) * coefficient) / 2);
+//                        rX = n * rWidth;
+//                        g2d.setColor(Color.GREEN);
+//                        g2d.fillRect(rX + 1, yShift - 1, rWidth - 2, rHeight - 1);
+//                        g2d.setColor(Color.black);
+//                        int fontSize = (int) (rWidth / 1.5);
+//                        Font f = new Font("Dialog", Font.BOLD, fontSize);
+//                        g2d.setFont(f);
+//                        FontMetrics fontMetrics = g2d.getFontMetrics();
+//                        int stringXCoordinate = rX + rWidth / 2 - fontMetrics.stringWidth
+//                                (String.valueOf(randomList.get(n))) / 2;
+//                        int stringYCoordinate = yShift - (int) (fontMetrics.getHeight() + 10);
+//                        g2d.drawString(String.valueOf(randomList.get(n)), stringXCoordinate, stringYCoordinate);
+//                    }
+//                    lowerTimer.stop();
+//                }
 
                 g2d.setColor(Color.black);
                 int fontSize = (int) (rWidth / 1.5);
@@ -450,14 +450,10 @@ public class BasicFrameWithClockG2_2 extends JFrame implements ActionListener {
             iterationCounter = 0;
             upperIterationCounter = 0;
             lowerIterationCounter = 0;
-            upperVisualPane.sorter.j = 0;
-//            lowerVisualPane.sorter.jjj = 0;
-//            bubbleSort.transit = 0;
-//            randomGenerator.transit = 0;
-            upperVisualPane.sorter.k = count - 1;
-            lowerVisualPane.sorter.kkk = count - 1;
-//            bubbleSort = new BubbleSort(randList);
-//            quickSort = new QuickSort(randomList);
+            lowerVisualPane.sorter.randomList = randomList;
+            upperVisualPane.sorter.randomList = randList;
+            upperVisualPane.sorter.reset();
+            lowerVisualPane.sorter.reset();
             start.setText("Start");
             upperVisualPane.repaint();
             lowerVisualPane.repaint();

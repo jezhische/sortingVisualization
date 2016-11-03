@@ -39,4 +39,9 @@ public class BubbleSort extends ParentSorter {
         }
         return randomList;
     }
+
+    public void reset() {
+        j = 0;
+        k = randomList.size() - 1;
+    }
 }

@@ -29,6 +29,7 @@ public abstract class ParentSorter {
     public ArrayList<Integer> sort() {
         return randomList;
     }
+    public void reset() {}
 
 //    public List<Integer> sort(List<Integer> randomList) {
 //        return randomList;
@@ -37,9 +38,9 @@ public abstract class ParentSorter {
 //    public void quickSort(ArrayList<Integer> randomList, int left, int right) {
 //    }
 
-    public void quickSort() {
-
-    }
+//    public void quickSort() {
+//
+//    }
 
     public int kkk;
 //    public int jjj = 0;
@@ -48,4 +49,5 @@ public abstract class ParentSorter {
     //    {leftIndex = 0;
 //    rightIndex = 24;}
     public int pivot;
+    public int pivotIndex;
 }
