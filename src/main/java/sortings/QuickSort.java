@@ -41,14 +41,14 @@ public class QuickSort extends ParentSorter {
 //        int pivotIndex = leftIndex + (rightIndex - leftIndex) / 2;
         System.out.println("leftIndex before = " + leftIndex + ", rightIndex before = " + rightIndex +
                 ", pivotIndex before =" + pivotIndex);
-        if (leftIndex < pivotIndex) {
+        if (leftIndex < pivotIndex - 1) {
             if (randomList.get(leftIndex) <= pivot) { // как только условие не выполнится, leftIndex перестанет
                 // увеличиваться и работа перейдет к правому сабэррею (следующее условие).
                 leftIndex++;
                 System.out.println("marker 1: leftIndex = " + leftIndex);
                 return;
             }
-        } else if (rightIndex > pivotIndex) {
+        } else if (rightIndex > pivotIndex + 1) {
             if (randomList.get(rightIndex) >= pivot) { // как только условие не выполнится, rightIndex перестанет
                 // уменьшаться и произойдет swap значений (следующее условие).
                 rightIndex--;
@@ -66,7 +66,7 @@ public class QuickSort extends ParentSorter {
         } else if(leftIndex==rightIndex) {
         int rTemp = right;
         int lTemp = left;
-        if (left < leftIndex) { // условие определения левого subarray
+        if (left < leftIndex && pivotIndex != 0) { // условие определения левого subarray
             left = lTemp;
             right = rightIndex;
 //                right = leftIndex - 1;
@@ -74,7 +74,7 @@ public class QuickSort extends ParentSorter {
             quickSort(left, right);
             return;
         }
-        if (leftIndex < rTemp) { // условие определения правого subarray
+        if (leftIndex < rTemp && pivotIndex != 0) { // условие определения правого subarray
             left = leftIndex;
             right = rTemp;
             pulse = true;
