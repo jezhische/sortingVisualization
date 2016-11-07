@@ -7,16 +7,16 @@ import java.util.Collections;
  * Created by WORK on 24.10.2016.
  * начиналось все с: https://dev64.wordpress.com/2013/07/24/quick-sort/
  */
-public class QuickSort extends ParentSorter {
+public class QuickSort02 extends ParentSorter {
 
     ArrayList<Integer> randomList = new ArrayList<>();
 //    private int left, right, leftIndex, rightIndex;
 //    public int pivotIndex;
 
-    public QuickSort(ArrayList<Integer> randomList) {
+    public QuickSort02(ArrayList<Integer> randomList) {
         this.randomList = randomList;
-//        left = 0;
-//        right = randomList.size() - 1;
+        left = 0;
+        right = randomList.size() - 1;
 
     }
 
@@ -27,7 +27,7 @@ public class QuickSort extends ParentSorter {
 
     boolean pulse = true;
 
-    public void quickSort(int left, int right) {
+    public void quickSort() {
 //        if (right >= left)
 //            return;
 //        int leftIndex, rightIndex;
@@ -71,14 +71,14 @@ public class QuickSort extends ParentSorter {
             right = rightIndex;
 //                right = leftIndex - 1;
             pulse = true;
-            quickSort(left, right);
+            quickSort();
             return;
         }
         if (leftIndex < rTemp) { // условие определения правого subarray
             left = leftIndex;
             right = rTemp;
             pulse = true;
-            quickSort(left, right);
+            quickSort();
         }
     }
 //        System.out.println(", pivot index = " + pivotIndex + ", pivot = " + pivot + ", leftIndex =" + leftIndex +
@@ -88,7 +88,7 @@ public class QuickSort extends ParentSorter {
     @Override
     public ArrayList<Integer> sort(ArrayList<Integer> randomList) {
 //        this.randomList = randomList;
-        quickSort(0, randomList.size() - 1);
+        quickSort();
         return randomList;
     }
 

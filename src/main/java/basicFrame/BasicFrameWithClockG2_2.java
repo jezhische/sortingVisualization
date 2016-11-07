@@ -360,7 +360,7 @@ public class BasicFrameWithClockG2_2 extends JFrame implements ActionListener {
             g2d.drawString("series " + String.valueOf(count) + "items", frameWidth / 80,
                     frameHeight / 10 + frameWidth / 80 + 5);
             g2d.setColor(Color.RED);
-            if (sorter.kkk == 0)
+            if (sorter.k == 0)
                 iterationCounter--;
             g2d.drawString("iteration number " + String.valueOf(iterationCounter / 2), frameWidth / 80,
                     frameHeight / 10 + 2 * frameWidth / 80 + 5);

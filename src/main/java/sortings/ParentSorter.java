@@ -42,7 +42,7 @@ public abstract class ParentSorter {
 //
 //    }
 
-    public int kkk;
+//    public int kkk;
 //    public int jjj = 0;
         public int leftIndex, rightIndex, left, right;
 //    public int left, right;
