@@ -381,16 +381,16 @@ public class BasicFrameWithClockG2_2 extends JFrame implements ActionListener {
             } else if (getDelay() == 0) {
                 if ((int) (upperIterationCounter % (60.0 / (getDelay() + 1))) == 0)
                     upperVisualPane.repaint();
-                upperVisualPane.sorter.sort(randList);
+                upperVisualPane.sorter.sort();
                 upperIterationCounter++;
             } else if (getDelay() > 0 && getDelay() < 20) {
                 if ((int) (upperIterationCounter % (20.0 / (getDelay() + 1))) == 0)
                     upperVisualPane.repaint(); // (тактовая частота около 50Гц)
-                upperVisualPane.sorter.sort(randList);
+                upperVisualPane.sorter.sort();
                 upperIterationCounter++;
             }
             else if (getDelay() >= 20) {
-                upperVisualPane.sorter.sort(randList);
+                upperVisualPane.sorter.sort();
                 upperVisualPane.repaint();
                 upperIterationCounter++;
             }
@@ -411,16 +411,16 @@ public class BasicFrameWithClockG2_2 extends JFrame implements ActionListener {
             } else if (getDelay() == 0) {
                 if ((int) (lowerIterationCounter % (60.0 / (getDelay() + 1))) == 0)
                     lowerVisualPane.repaint();
-                lowerVisualPane.sorter.sort(randomList);
+                lowerVisualPane.sorter.sort();
                 lowerIterationCounter++;
             } else if (getDelay() > 0 && getDelay() < 20) {
                 if ((int) (lowerIterationCounter % (20.0 / (getDelay() + 1))) == 0)
                     lowerVisualPane.repaint(); // (тактовая частота около 50Гц)
-                lowerVisualPane.sorter.sort(randomList);
+                lowerVisualPane.sorter.sort();
                 lowerIterationCounter++;
             }
             else if (getDelay() >= 20) {
-                lowerVisualPane.sorter.sort(randomList);
+                lowerVisualPane.sorter.sort();
                 lowerVisualPane.repaint();
                 lowerIterationCounter++;
             }
@@ -450,11 +450,14 @@ public class BasicFrameWithClockG2_2 extends JFrame implements ActionListener {
             iterationCounter = 0;
             upperIterationCounter = 0;
             lowerIterationCounter = 0;
-            lowerVisualPane.sorter.randomList = randomList;
-            upperVisualPane.sorter.randomList = randList;
-            upperVisualPane.sorter.reset();
-            lowerVisualPane.sorter.reset();
+//            lowerVisualPane.sorter.randomList = randomList;
+//            upperVisualPane.sorter.randomList = randList;
+            upperVisualPane.sorter.reset(randList);
+            lowerVisualPane.sorter.reset(randomList);
+//            quickSort = new QuickSort(randomList);
+//            lowerVisualPane = new LowerRandRect(quickSort);
             start.setText("Start");
+//            this.repaint(); // в смысле, перерисовать все окно
             upperVisualPane.repaint();
             lowerVisualPane.repaint();
         }

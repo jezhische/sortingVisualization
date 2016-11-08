@@ -27,7 +27,7 @@ public class QuickSort extends ParentSorter {
 
     boolean pulse = true;
 
-    public void quickSort(int left, int right) {
+    private void quickSort(int left, int right) {
 //        if (right >= left)
 //            return;
 //        int leftIndex, rightIndex;
@@ -86,13 +86,14 @@ public class QuickSort extends ParentSorter {
 }
 
     @Override
-    public ArrayList<Integer> sort(ArrayList<Integer> randomList) {
+    public ArrayList<Integer> sort() {
 //        this.randomList = randomList;
         quickSort(0, randomList.size() - 1);
         return randomList;
     }
 
-    public void reset() {
+    public void reset(ArrayList<Integer> randomList) {
+        this.randomList = randomList;
         left = 0;
         right = randomList.size() - 1;
     }

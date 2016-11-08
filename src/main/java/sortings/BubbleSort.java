@@ -15,12 +15,12 @@ public class BubbleSort extends ParentSorter {
         k = randomList.size() - 1;
     }
     @Override
-    public ArrayList<Integer> sort(ArrayList<Integer> randomList) {
+    public ArrayList<Integer> sort() {
 //        if (j == 0 && transit == 0) {
 //            transit++;
 //            return randomList;
 //        } else
-        this.randomList = randomList;
+//        this.randomList = randomList;
         if (j < k) {
             if (randomList.get(j) > randomList.get(j + 1)) {
                 Collections.swap(randomList, j, j + 1);
@@ -40,7 +40,8 @@ public class BubbleSort extends ParentSorter {
         return randomList;
     }
 
-    public void reset() {
+    public void reset(ArrayList<Integer> randomList) {
+        this.randomList = randomList;
         j = 0;
         k = randomList.size() - 1;
     }

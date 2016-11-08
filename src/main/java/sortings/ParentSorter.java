@@ -21,15 +21,16 @@ public abstract class ParentSorter {
     public int transit = 0;
     //    public int count;
     public ArrayList<Integer> randomList;
+    public ArrayList<Integer> randList;
 
     public ArrayList<Integer> sort(ArrayList<Integer> randomList) {
         return randomList;
     }
 
     public ArrayList<Integer> sort() {
-        return randomList;
+        return new ArrayList<Integer>();
     }
-    public void reset() {}
+    public void reset(ArrayList<Integer> randomList) {}
 
 //    public List<Integer> sort(List<Integer> randomList) {
 //        return randomList;
