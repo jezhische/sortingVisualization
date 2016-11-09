@@ -286,7 +286,6 @@ public class BasicFrameWithClockG2_2 extends JFrame implements ActionListener {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
 
-//            System.out.println("kkk = " + sorter.kkk);
 
             g2d.setBackground(Color.PINK);
             frameWidth = this.getWidth();
@@ -436,7 +435,6 @@ public class BasicFrameWithClockG2_2 extends JFrame implements ActionListener {
             start.setText("Pause");
         } else if (e.getActionCommand().equals("Pause")) {
             upperTimer.stop();
-//            upperVisualPane.repaint();
             lowerTimer.stop();
             start.setText("Start");
         } else if (e.getActionCommand().equals("Reset")) {
@@ -446,16 +444,11 @@ public class BasicFrameWithClockG2_2 extends JFrame implements ActionListener {
             count = rectNumberSlider.getValue();
             randomList = getRandomList(count);
             randList = getRandList();
-//            upperVisualPane = new UpperRandRect(bubbleSort);
             iterationCounter = 0;
             upperIterationCounter = 0;
             lowerIterationCounter = 0;
-//            lowerVisualPane.sorter.randomList = randomList;
-//            upperVisualPane.sorter.randomList = randList;
             upperVisualPane.sorter.reset(randList);
             lowerVisualPane.sorter.reset(randomList);
-//            quickSort = new QuickSort(randomList);
-//            lowerVisualPane = new LowerRandRect(quickSort);
             start.setText("Start");
 //            this.repaint(); // в смысле, перерисовать все окно
             upperVisualPane.repaint();
@@ -465,6 +458,5 @@ public class BasicFrameWithClockG2_2 extends JFrame implements ActionListener {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new BasicFrameWithClockG2_2());
-//        getRandomList(20);
     }
 }

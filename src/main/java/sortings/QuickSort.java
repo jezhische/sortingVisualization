@@ -9,12 +9,13 @@ import java.util.Collections;
  */
 public class QuickSort extends ParentSorter {
 
-    ArrayList<Integer> randomList = new ArrayList<>();
+//    ArrayList<Integer> randomList = new ArrayList<>();
 //    private int left, right, leftIndex, rightIndex;
 //    public int pivotIndex;
 
     public QuickSort(ArrayList<Integer> randomList) {
         this.randomList = randomList;
+        pulse = true;
 //        left = 0;
 //        right = randomList.size() - 1;
 
@@ -25,7 +26,7 @@ public class QuickSort extends ParentSorter {
 //        right = randomList.size() - 1;
 //    }
 
-    boolean pulse = true;
+
 
     private void quickSort(int left, int right) {
 //        if (right >= left)
@@ -41,33 +42,30 @@ public class QuickSort extends ParentSorter {
 //        int pivotIndex = leftIndex + (rightIndex - leftIndex) / 2;
         System.out.println("leftIndex before = " + leftIndex + ", rightIndex before = " + rightIndex +
                 ", pivotIndex before =" + pivotIndex);
-        if (leftIndex < pivotIndex - 1) {
-            if (randomList.get(leftIndex) <= pivot) { // как только условие не выполнится, leftIndex перестанет
+        if (leftIndex < pivotIndex - 1 && randomList.get(leftIndex) <= pivot) {
+             // как только условие не выполнится, leftIndex перестанет
                 // увеличиваться и работа перейдет к правому сабэррею (следующее условие).
                 leftIndex++;
                 System.out.println("marker 1: leftIndex = " + leftIndex);
                 return;
-            }
-        } else if (rightIndex > pivotIndex + 1) {
-            if (randomList.get(rightIndex) >= pivot) { // как только условие не выполнится, rightIndex перестанет
+        } else if (rightIndex > pivotIndex + 1 && randomList.get(rightIndex) >= pivot) {
+             // как только условие не выполнится, rightIndex перестанет
                 // уменьшаться и произойдет swap значений (следующее условие).
                 rightIndex--;
                 System.out.println("marker 2: rightIndex = " + rightIndex);
                 return;
-            }
-        }
-        if (leftIndex < rightIndex) {
+        } else if (leftIndex < rightIndex && randomList.get(leftIndex) > randomList.get(rightIndex)) {
             Collections.swap(randomList, leftIndex, rightIndex);
-            if (leftIndex < pivotIndex)
+            if (leftIndex < pivotIndex - 1)
                 leftIndex++;
-            if (rightIndex > pivotIndex)
+            if (rightIndex > pivotIndex + 1)
                 rightIndex--;
             return;
-        } else if(leftIndex==rightIndex) {
+        } else if(leftIndex == rightIndex) {
         int rTemp = right;
         int lTemp = left;
         if (left < leftIndex && pivotIndex != 0) { // условие определения левого subarray
-            left = lTemp;
+//            left = lTemp;
             right = rightIndex;
 //                right = leftIndex - 1;
             pulse = true;
@@ -96,5 +94,6 @@ public class QuickSort extends ParentSorter {
         this.randomList = randomList;
         left = 0;
         right = randomList.size() - 1;
+        pulse = true;
     }
 }

@@ -51,4 +51,5 @@ public abstract class ParentSorter {
 //    rightIndex = 24;}
     public int pivot;
     public int pivotIndex;
+    public boolean pulse;
 }
