@@ -90,6 +90,6 @@ public class QuickSortListFullWithoutIntPar extends ParentSorter {
     }
 
     public static void main(String[] args) {
-        new QuickSortListFullWithoutIntPar(new QuickSortListFullWithoutIntPar(9).getRandomList()).printList();
+        new QuickSortListFullWithoutIntPar(new QuickSortListFullWithoutIntPar(70).getRandomList()).printList();
     }
 }

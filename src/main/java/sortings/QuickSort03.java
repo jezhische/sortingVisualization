@@ -7,13 +7,13 @@ import java.util.Collections;
  * Created by WORK on 24.10.2016.
  * начиналось все с: https://dev64.wordpress.com/2013/07/24/quick-sort/
  */
-public class QuickSort extends ParentSorter {
+public class QuickSort03 extends ParentSorter {
 
 //    ArrayList<Integer> randomList = new ArrayList<>();
 //    private int left, right, leftIndex, rightIndex;
 //    public int pivotIndex;
 
-    public QuickSort(ArrayList<Integer> randomList) {
+    public QuickSort03(ArrayList<Integer> randomList) {
         this.randomList = randomList;
         pulse = true;
 //        left = 0;
@@ -72,7 +72,7 @@ public class QuickSort extends ParentSorter {
         else if(leftIndex == rightIndex - 2) {
         int rTemp = right;
         int lTemp = left;
-        if (left < leftIndex && pivotIndex > left + 1) { // условие определения левого subarray
+        if (left < leftIndex && pivotIndex != 0) { // условие определения левого subarray
 //            left = lTemp;
             right = rightIndex;
 //                right = leftIndex - 1;
@@ -80,7 +80,7 @@ public class QuickSort extends ParentSorter {
             quickSort(left, right);
             return;
         }
-        if (leftIndex < rTemp && pivotIndex > left + 1) { // условие определения правого subarray
+        if (leftIndex < rTemp && pivotIndex != 0) { // условие определения правого subarray
             left = leftIndex;
             right = rTemp;
             pulse = true;
